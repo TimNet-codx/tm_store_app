@@ -24,7 +24,7 @@ class CategoryMode{
   factory CategoryMode.fromJson(Map<String, dynamic> map){
     return CategoryMode(
       id: map["_id"] as String? ?? "",
-      name: map["name"] as String? ?? "",
+      name: map["name"] as String? ?? "", 
       image: map["image"] as String? ?? "", 
       banner: map["banner"] as String? ?? "",
       );
