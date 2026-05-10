@@ -18,7 +18,7 @@ final providerContainer = ProviderContainer();
 class LoginUserController extends GetxController {
   static LoginUserController get instance => Get.find();
 
-         // Variables
+  // Variables
    final rememberMe = false.obs;
    final hidePassword = true.obs;
   //  final localStorage = GetStorage();
@@ -67,7 +67,8 @@ if (response.statusCode != 200 && response.statusCode != 201) {
 
     /// 💾 SAVE TO LOCAL STORAGE
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('auth-token', token);
+    // await prefs.setString('auth-token', token);
+    await prefs.setString('token', token);
     await prefs.setString('user', userJson);
 
     /// 🧠 UPDATE APP STATE

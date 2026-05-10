@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/feastures/personalization/views/account/account_screen.dart';
+import 'package:tm_store_app/feastures/personalization/views/account/settings/settings.dart';
 import 'package:tm_store_app/feastures/personalization/views/favorite/favorite_screen.dart';
 import 'package:tm_store_app/feastures/shop/controllers/subCategory_controller.dart';
 import 'package:tm_store_app/feastures/shop/models/category_model.dart';
@@ -31,16 +32,17 @@ class InnerCategoryScreen extends StatelessWidget {
       const CategoryScreen(),
       const StoresScreen(),
       const CartScreen(),
-       AccountScreen(),
+       //AccountScreen(),
+       SettingsScreen()
     ];
 
     return Obx(() => Scaffold(
       appBar: TAppBar(
         title: Text(
           category.name,
-          style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.white60),
+          style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.white),
         ),
-        showBackArrow: true,
+        showBackArrow: true
       ),
       body: pages[controller.pageIndex.value],
       bottomNavigationBar: BottomNavigationBar(

@@ -1,6 +1,9 @@
-String uri = "http://192.168.1.91:3000";
+// String uri = "http://192.168.1.91:3000";
 
-//String uri = "http://10.123.200.221:3000"; 
+String uri = "http://192.168.0.130:3000";
+
+
+//String uri = "http://10.24.12.221:3000"; 
 
 
 

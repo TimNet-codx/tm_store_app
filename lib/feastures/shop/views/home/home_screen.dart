@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         // Categories Header
-                        TSectionHeading(title: 'Popular Categories', showActionButton: false),
+                        TSectionHeading(title: 'Popular Categories', showActionButton: false,),
                         SizedBox(height: TSizes.spaceBtwItems),
                         // Categories List
                         THomeCategories(),

@@ -87,12 +87,19 @@ final SubCategoryController subCategoryController = Get.put(SubCategoryControlle
    
 
 
+
   @override
   void onInit() {
-    fetchCategories();
-    super.onInit();
-  }
+  super.onInit();
+  initializeData();
+}
 
+Future<void> initializeData() async {
+  // Start all fetches at the same time
+  await Future.wait(
+    [fetchCategories()]
+  );
+}
 //  void selectCategory(String id, String name, String banner ) {
 //     selectedCategoryId.value = id;
 //     selectedCategoryName.value = name;

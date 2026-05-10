@@ -10,12 +10,14 @@ import 'package:tm_store_app/common/widgets/products/product_details/widgets/pro
 import 'package:tm_store_app/common/widgets/products/product_details/widgets/rating_share_widget.dart';
 import 'package:tm_store_app/common/widgets/products/product_reviews/product_reviews.dart';
 import 'package:tm_store_app/common/widgets/texts/section_heading.dart';
+import 'package:tm_store_app/feastures/shop/models/product_model.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 
 //import 'package:tim_store/utils/helpers/helper_functions.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+  final ProductModel product;
+  const ProductDetailScreen({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class ProductDetailScreen extends StatelessWidget {
         child: Column(
           children: [
             // Product Image Slider
-            TProductImageSlider(),
+            TProductImageSlider(product: product),
             // Prodct Details
             Padding(
               padding: const EdgeInsets.only(right: TSizes.defaultSpace, left: TSizes.defaultSpace, bottom: TSizes.defaultSpace),

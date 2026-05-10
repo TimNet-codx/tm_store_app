@@ -14,9 +14,9 @@ class AccountScreen extends StatelessWidget {
           child: Column(
             children: [
                Text("Account"),
-               ElevatedButton(onPressed: ()async{
+            ElevatedButton(onPressed: ()async{
                 await controller.signOutUser(context: context);
-               }, child: Text("SignOut")),
+               }, child: Text("SignOut")),   
                ],)) ,),
     );
   }

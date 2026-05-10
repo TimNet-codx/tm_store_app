@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tm_store_app/feastures/authentication/controllers/user_controller.dart';
 import 'package:tm_store_app/feastures/authentication/views/login/login.dart';
 import 'package:tm_store_app/provider/user_provider.dart';
 import 'package:tm_store_app/utils/helpers/network_manager.dart';
@@ -13,6 +14,7 @@ void main() {
   // Run The App Wrapped in a ProviderScope to enable Riverpod State Management
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(NetworkManager(), permanent: true);
+  Get.put(UserController());
   runApp(ProviderScope(child: const MyApp()));
 }
 // Root Widget of the App,  a ConsumerWidget to consume state chnages i.e it was changed from StatelessWidget to ConsumerWidget

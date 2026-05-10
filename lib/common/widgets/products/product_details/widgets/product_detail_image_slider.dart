@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/common/widgets/custom_shape/curved_edges/curved_edges_widget.dart';
 import 'package:tm_store_app/common/widgets/icons/t_circular_icon.dart';
 import 'package:tm_store_app/common/widgets/images/t_rounded_image.dart';
+import 'package:tm_store_app/feastures/shop/controllers/product_controller.dart';
+import 'package:tm_store_app/feastures/shop/models/product_model.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
 import 'package:tm_store_app/utils/constants/image_strings.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 class TProductImageSlider extends StatelessWidget {
-  const TProductImageSlider({super.key});
+  final ProductModel product;
+  const TProductImageSlider({super.key, required this.product});
 
 
   @override
   Widget build(BuildContext context) {
+    final ProductController productController = Get.put(ProductController());
+
     final dark = THelperFunctions.isDarkMode(context);
     return TCurvedEdgeWidget(
       child: Container(
@@ -26,7 +32,15 @@ class TProductImageSlider extends StatelessWidget {
               height: 400,
               child: Padding(
               padding:  EdgeInsets.all(TSizes.productImageRadius * 2),
-              child: Center(child: Image(image: AssetImage(TImages.facebook),)),
+              //child: Center(child: Image(image: NetworkImage(productController.productDetails[0].images))),
+              child: Center(
+                  child: Image.network(
+                    //product.images,
+                    product.images.isNotEmpty ? product.images[0] : "",
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.broken_image, size: 50),
+                  ),
+                ),
             ),
             ),
     
@@ -38,16 +52,21 @@ class TProductImageSlider extends StatelessWidget {
               child: SizedBox(
                 height: 70,
                 child: ListView.separated(
-                itemCount: 6,
+                itemCount: product.images.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 separatorBuilder: (_, __) => const SizedBox(width: TSizes.spaceBtwItems,),
-                 itemBuilder: (_, index) => TRoundedImage(
+                 itemBuilder: (_, index) {
+                   final imageUrl = product.images[index];
+                  return  TRoundedImage(
                     width: 80,
                     backgroundColor: dark ? TColors.dark : TColors.white,
                     border: Border.all(color: TColors.primary),
                     padding: const EdgeInsets.all(TSizes.sm),
-                    imageUrl: TImages.google),
+                    imageUrl: imageUrl,
+                    isNetWorkImage: true,
+                    );
+                     }
                 ),
               ),
             ),

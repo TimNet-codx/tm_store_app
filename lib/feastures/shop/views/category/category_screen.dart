@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/feastures/shop/controllers/category_controller.dart';
 import 'package:tm_store_app/feastures/shop/controllers/subCategory_controller.dart';
+import 'package:tm_store_app/utils/constants/colors.dart';
 
 
 class CategoryScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class CategoryScreen extends StatelessWidget {
         child:  TAppBar(
           title: Text(
            "Categories",
-          style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.white60),
+          style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.white),
         ),
         ),
       ),

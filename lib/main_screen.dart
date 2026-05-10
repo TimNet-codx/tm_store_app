@@ -2,6 +2,7 @@
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tm_store_app/feastures/personalization/views/account/account_screen.dart';
+import 'package:tm_store_app/feastures/personalization/views/account/settings/settings.dart';
 import 'package:tm_store_app/feastures/personalization/views/favorite/favorite_screen.dart';
 import 'package:tm_store_app/feastures/shop/views/cart/cart_screen.dart';
 import 'package:tm_store_app/feastures/shop/views/category/category_screen.dart';
@@ -68,7 +69,8 @@ class MainScreen extends StatelessWidget {
     const CategoryScreen(),
     const StoresScreen(),
     const CartScreen(),
-    AccountScreen(),
+    //AccountScreen(),
+    SettingsScreen()
   ];
 
   @override

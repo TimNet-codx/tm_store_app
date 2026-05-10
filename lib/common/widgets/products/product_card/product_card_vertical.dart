@@ -24,10 +24,10 @@ class TProductCardVertical extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
     final ProductController productController = Get.put(ProductController());
-    final controller = Get.find<ProductController>();
+    //final controller = Get.find<ProductController>();
 
     return GestureDetector(
-       onTap: () => Get.to(() => const ProductDetailScreen()),
+       onTap: () => Get.to(() => ProductDetailScreen(product: product)),
       child: Container(
         width: 180,
         padding: const EdgeInsets.all(1),
@@ -50,7 +50,8 @@ class TProductCardVertical extends StatelessWidget {
                   children: [
                     // Product Image
                     TRoundedImage(
-                      imageUrl: product.images,
+                     // imageUrl: product.images,
+                      imageUrl: product.images.isNotEmpty ? product.images[0] : "",
                       isNetWorkImage: true,
                       applyImageRadius: true,
                     ),
@@ -79,7 +80,7 @@ class TProductCardVertical extends StatelessWidget {
                         print("UI Rebuilding. Fav List Size: ${productController.favouriteProducts.length}");
 
                         // Use a string comparison directly
-                       final isFavourite = controller.favouriteProducts.any((p) => p.id == product.id);
+                       final isFavourite = productController.favouriteProducts.any((p) => p.id == product.id);
 
                         return Positioned(
                           top: 0,
@@ -87,7 +88,7 @@ class TProductCardVertical extends StatelessWidget {
                           child: TCircularIcon(
                             icon: isFavourite ? Iconsax.heart5 : Iconsax.heart,
                             color: isFavourite ? Colors.red : Colors.grey,
-                            onPressed: () => controller.addAndRemoveFavouriteProduct(product.id),
+                            onPressed: () => productController.addAndRemoveFavouriteProduct(product.id),
                           ),
                         );
                       })

@@ -8,7 +8,8 @@ class ProductModel {
   final String subCategory;
   final int productPrice;
   final int quantity;
-  final String images;
+  //final String images;
+  final List<String> images;
   final String vendorId;
   final String fullName;
   final DateTime createdAt;
@@ -62,9 +63,10 @@ class ProductModel {
       // images: map["images"] as String? ?? "",
       //images: map["images"] != null ? List<String>.from(map["images"]) : [],
       
-      images: (map["images"] != null && map["images"] is List && (map["images"] as List).isNotEmpty)
-        ? map["images"][0].toString() 
-        : "",
+      // images: (map["images"] != null && map["images"] is List && (map["images"] as List).isNotEmpty)
+      //   ? map["images"][0].toString() 
+      //   : "",
+      images: List<String>.from(map['images']),
       vendorId: map["vendorId"] as String? ?? "",
       fullName: map["fullName"] as String? ?? "",
       createdAt: map["createdAt"] != null 
