@@ -15,7 +15,7 @@ class FavoriteScreen extends StatelessWidget {
     final ProductController productController = Get.put(ProductController());
     
     return Scaffold(
-      appBar: TAppBar(title: Text('Favorite', style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.white),)),
+      appBar: TAppBar(title: Text('Favorite', style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.black),)),
       body: SingleChildScrollView(child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace), child: Column( children: [TGridLayout(itemCount: productController.favouriteProducts.length, itemBuilder: (_, index) =>  TProductCardVertical(product: productController.favouriteProducts[index],))],),)),
     );
   }

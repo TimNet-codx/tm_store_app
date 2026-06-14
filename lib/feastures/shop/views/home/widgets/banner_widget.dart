@@ -138,7 +138,7 @@ class BannerWidget extends StatelessWidget {
 
             //items: controller.banners.map((banner) => TRoundedImage(imageUrl: banner.image,)).toList(),
             items: controller.banners.map((banner) => TRoundedImage(imageUrl: banner.image,
-                    isNetWorkImage: true,
+                    isNetworkImage: true,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 170,

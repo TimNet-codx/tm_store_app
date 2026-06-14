@@ -5,6 +5,7 @@ import 'package:tm_store_app/common/widgets/brands/brand_card.dart';
 import 'package:tm_store_app/common/widgets/layouts/grid_layout.dart';
 import 'package:tm_store_app/common/widgets/texts/section_heading.dart';
 import 'package:tm_store_app/feastures/shop/views/stores/brand/brand_product.dart';
+import 'package:tm_store_app/utils/constants/colors.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 
 class AllBrandsScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class AllBrandsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TAppBar(title: Text('Brand'), showBackArrow: true),
+      appBar: TAppBar(title: Text('All Brands', style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.white),), showBackArrow: true),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(TSizes.defaultSpace),

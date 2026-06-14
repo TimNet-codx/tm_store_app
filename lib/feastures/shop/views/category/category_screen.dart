@@ -5,6 +5,7 @@ import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/feastures/shop/controllers/category_controller.dart';
 import 'package:tm_store_app/feastures/shop/controllers/subCategory_controller.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
+import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 
 class CategoryScreen extends StatelessWidget {
@@ -14,6 +15,8 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    final dark = THelperFunctions.isDarkMode(context);
     // final CategoryController categoryController = Get.find();
      final CategoryController categoryController = Get.find<CategoryController>();
 
@@ -26,7 +29,7 @@ class CategoryScreen extends StatelessWidget {
         child:  TAppBar(
           title: Text(
            "Categories",
-          style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.white),
+          style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.black),
         ),
         ),
       ),
@@ -36,7 +39,7 @@ class CategoryScreen extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              color: Colors.grey.shade100,
+              color: dark ? TColors.dark : TColors.light,
               child: Obx(() {
                 if (categoryController.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
@@ -99,7 +102,7 @@ class CategoryScreen extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Container(
-              color: Colors.white,
+              color: dark ? TColors.dark : TColors.light,
               child: Obx(() {
                 final selectedName =
                     categoryController.selectedCategoryName.value;
@@ -146,7 +149,7 @@ class CategoryScreen extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 )
                               : null,
-                          color: Colors.grey.shade300,
+                          color: dark ? TColors.dark : TColors.light,
                         ),
                         child: selectedBanner.isEmpty
                             ? const Center(child: Text("No banner"))

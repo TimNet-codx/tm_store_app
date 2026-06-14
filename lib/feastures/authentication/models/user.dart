@@ -51,7 +51,9 @@ class UserModel{
    // its usefull when you already have the data in a Map format
   factory UserModel.fromMap(Map<String, dynamic> map){
     return UserModel(
-      id: map["_id"] as String?  ?? "",
+      // id: map['_id'] ?? "",
+      id: map['_id'] ?? map['id'] ?? "",
+      // id: map['_id']?.toString() ?? map['id']?.toString() ?? "",
       fullName: map["fullName"] as String? ?? "",
       email: map["email"] as String? ?? "",
       state: map["state"] as String? ?? "",
@@ -59,7 +61,9 @@ class UserModel{
       locality: map["locality"] as String? ?? "",
       password: map["password"] as String? ?? "",
       token: map["token"] as String? ?? "",
-
+      
+      
+        
     );  
   }
 

@@ -5,7 +5,7 @@ import 'package:tm_store_app/utils/constants/sizes.dart';
 
 class TRoundedImage extends StatelessWidget {
   const TRoundedImage({
-    super.key, this.width, this.height, required this.imageUrl, this.applyImageRadius = true, this.border, this.backgroundColor = TColors.light, this.fit = BoxFit.contain, this.padding, this.isNetWorkImage =false, this.onPressed, this.borderRadius = TSizes.md,
+    super.key, this.width, this.height, required this.imageUrl, this.applyImageRadius = true, this.border, this.backgroundColor = TColors.light, this.fit = BoxFit.contain, this.padding, this.isNetworkImage =false, this.onPressed, this.borderRadius = TSizes.md,
   });
 
   final double? width, height;
@@ -15,7 +15,7 @@ class TRoundedImage extends StatelessWidget {
   final Color backgroundColor;
   final BoxFit? fit;
   final EdgeInsetsGeometry? padding;
-  final bool isNetWorkImage;
+  final bool isNetworkImage;
   final VoidCallback? onPressed;
   final double borderRadius;
 
@@ -31,7 +31,7 @@ class TRoundedImage extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: applyImageRadius ? BorderRadius.circular(borderRadius) : BorderRadius.zero,
-          child: Image(fit: fit, image: isNetWorkImage ? NetworkImage(imageUrl) : AssetImage(imageUrl) as ImageProvider,)
+          child: Image(fit: fit, image: isNetworkImage ? NetworkImage(imageUrl) : AssetImage(imageUrl) as ImageProvider,)
         ),
       ),
     );

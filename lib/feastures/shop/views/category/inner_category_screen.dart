@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
-import 'package:tm_store_app/feastures/personalization/views/account/account_screen.dart';
 import 'package:tm_store_app/feastures/personalization/views/account/settings/settings.dart';
 import 'package:tm_store_app/feastures/personalization/views/favorite/favorite_screen.dart';
 import 'package:tm_store_app/feastures/shop/controllers/subCategory_controller.dart';
@@ -31,7 +30,7 @@ class InnerCategoryScreen extends StatelessWidget {
       const FavoriteScreen(),
       const CategoryScreen(),
       const StoresScreen(),
-      const CartScreen(),
+      // const CartScreen(),
        //AccountScreen(),
        SettingsScreen()
     ];
@@ -40,7 +39,7 @@ class InnerCategoryScreen extends StatelessWidget {
       appBar: TAppBar(
         title: Text(
           category.name,
-          style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.white),
+          style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.black),
         ),
         showBackArrow: true
       ),
@@ -56,7 +55,7 @@ class InnerCategoryScreen extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Iconsax.heart), label: 'Favorite'),
           BottomNavigationBarItem(icon: Icon(Iconsax.category), label: 'Categories'),
           BottomNavigationBarItem(icon: Icon(Iconsax.shop), label: 'Stores'),
-          BottomNavigationBarItem(icon: Icon(Iconsax.shopping_bag), label: 'Cart'),
+          // BottomNavigationBarItem(icon: Icon(Iconsax.shopping_bag), label: 'Cart'),
           BottomNavigationBarItem(icon: Icon(Iconsax.user), label: 'Account'),
         ],
       ),

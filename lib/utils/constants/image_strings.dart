@@ -21,6 +21,19 @@ class TImages{
   //static const String deliveredEmailIllustration = "assets/images/animations/sammy-line-man-receives-a-mail.png";
   static String successfullyRegisterAnimation = "assets/images/animations/72462-check-register.json";
 
+    // -- OnBoarding Texts
+  static const String onBoardingImage1 = "assets/images/on_boarding_images/sammy-line-searching.gif";
+  static const String onBoardingImage2 = "assets/images/on_boarding_images/sammy-line-shopping.gif";
+  static const String onBoardingImage3 = "assets/images/on_boarding_images/sammy-line-delivery.gif";
+
+
+  
+  // -- Product Reviews
+  static const String userProfileImage1 = "assets/images/reviews/review_profile_image_1.jpg";
+  static const String userProfileImage2 = "assets/images/reviews/review_profile_image_2.jpeg";
+  static const String userProfileImage3 = "assets/images/reviews/review_profile_image_3.jpeg";
+
+
 
   // -- Payment Methods
   static const String applePay = "assets/icons/payment_methods/apple-pay.png";

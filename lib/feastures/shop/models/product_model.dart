@@ -7,17 +7,20 @@ class ProductModel {
   final String category;
   final String subCategory;
   final int productPrice;
-  final int quantity;
+  late final int quantity;
+  final int productQuantity;
   //final String images;
   final List<String> images;
   final String vendorId;
   final String fullName;
   final DateTime createdAt;
    bool favourite;
+  final String userId;
 
    
 
-  ProductModel({
+  ProductModel( {
+    required this.productQuantity,
     required this.id,
     required this.productName,
     required this.description,
@@ -30,6 +33,7 @@ class ProductModel {
     required this.fullName,
     required this.createdAt,
     required this.favourite,
+    required this.userId,
   });
 
   Map<String, dynamic> toMap() {
@@ -41,10 +45,13 @@ class ProductModel {
       'subCategory': subCategory,
       'productPrice': productPrice,
       'quantity': quantity,
+      'productQuantity': productQuantity,
+
       'images': images,
       'vendorId': vendorId,
       'fullName': fullName,
-      // 'favourite': favourite,
+      'userId': userId,
+      //'favourite': favourite,
       'createdAt': createdAt.toIso8601String(),
     };
   }
@@ -52,6 +59,7 @@ class ProductModel {
 
    factory ProductModel.fromMap(Map<String, dynamic> map){
     return ProductModel(  
+      userId: map["userId"] as String? ?? "",
       id: map["_id"] as String? ?? "",
       productName: map["productName"] as String? ?? "",
       description: map["description"] as String? ?? "",
@@ -60,6 +68,8 @@ class ProductModel {
       // productPrice: map["productPrice"] as int? ?? 0,
       productPrice: (map["productPrice"] as num?)?.toInt() ?? 0,
       quantity: map["quantity"] as int? ?? 0,
+      productQuantity: map["productQuantity"] as int? ?? 0,
+
       // images: map["images"] as String? ?? "",
       //images: map["images"] != null ? List<String>.from(map["images"]) : [],
       

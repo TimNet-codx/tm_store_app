@@ -19,10 +19,9 @@ class SettingsScreen extends StatelessWidget {
    SettingsScreen({super.key});
     final controller = Get.put(SignOutUserController());
 
-  
-
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

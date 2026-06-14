@@ -52,7 +52,7 @@ class TProductCardVertical extends StatelessWidget {
                     TRoundedImage(
                      // imageUrl: product.images,
                       imageUrl: product.images.isNotEmpty ? product.images[0] : "",
-                      isNetWorkImage: true,
+                      isNetworkImage: true,
                       applyImageRadius: true,
                     ),
 

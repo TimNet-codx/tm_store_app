@@ -24,6 +24,8 @@ class UserProvider extends StateNotifier<User?>{
 
     void setUser(String userJson){
       state = User.formJson(userJson);
+
+      print("🧠 Riverpod State Populated -> Verified Saved ID is: '${state?.id}'");
     }
 
     // Method to Clear user State

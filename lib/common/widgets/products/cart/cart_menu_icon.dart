@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:tm_store_app/feastures/shop/views/cart/cart_screen.dart';
+import 'package:tm_store_app/provider/cart_provider.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
 
 
-class TCartCounterIcon extends StatelessWidget {
+class TCartCounterIcon extends ConsumerWidget {
   const TCartCounterIcon({
     super.key, required this.onPressed, required this.iconColor
   });
@@ -14,10 +14,11 @@ class TCartCounterIcon extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartData = ref.watch(cartProvider);
     return Stack(
       children: [
-       IconButton(onPressed: () => Get.to(() => const CartScreen()), icon:  Icon(Iconsax.shopping_bag, color: iconColor)),
+       IconButton(onPressed: onPressed, icon:  Icon(Iconsax.shopping_bag, color: iconColor)),
        Positioned(
         right: 0,
          child: Container(
@@ -28,7 +29,7 @@ class TCartCounterIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(100)
           ),
           child: Center(
-            child: Text("2", style: Theme.of(context).textTheme.labelLarge!.apply(color: TColors.white, fontSizeFactor: 0.8),),
+            child: Text(cartData.length.toString(), style: Theme.of(context).textTheme.labelLarge!.apply(color: TColors.white, fontSizeFactor: 0.8),),
           ),
          ),
        )

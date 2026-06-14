@@ -68,7 +68,7 @@ class MainScreen extends StatelessWidget {
     const FavoriteScreen(),
     const CategoryScreen(),
     const StoresScreen(),
-    const CartScreen(),
+    // const CartScreen(),
     //AccountScreen(),
     SettingsScreen()
   ];
@@ -92,8 +92,8 @@ class MainScreen extends StatelessWidget {
                   icon: Icon(Iconsax.category), label: 'Categories'),
               BottomNavigationBarItem(
                   icon: Icon(Iconsax.shop), label: 'Stores'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.shopping_bag), label: 'Cart'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Iconsax.shopping_bag), label: 'Cart'),
               BottomNavigationBarItem(
                   icon: Icon(Iconsax.user), label: 'Account'),
             ],

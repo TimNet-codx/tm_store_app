@@ -21,10 +21,11 @@ class TAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: EdgeInsets.symmetric(),
       child: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: TColors.primary,
+        // backgroundColor: TColors.primary,
+         backgroundColor: Colors.transparent,
         //backgroundColor: Colors.transparent,
         leading: showBackArrow
-         ? IconButton(onPressed: () => Get.back(), icon:  Icon(Iconsax.arrow_left, color: dark ? TColors.white : TColors.white,)) 
+         ? IconButton(onPressed: () => Get.back(), icon:  Icon(Iconsax.arrow_left, color: dark ? TColors.white : TColors.black,)) 
          : leadingIcon != null ? IconButton(onPressed: leadingOnPressed, icon: Icon(leadingIcon)) : null,
          title: title,
          actions: actions,

@@ -4,6 +4,7 @@ import 'package:tm_store_app/common/widgets/images/t_circular_image.dart';
 import 'package:tm_store_app/common/widgets/texts/product_price_text.dart';
 import 'package:tm_store_app/common/widgets/texts/product_title_text.dart';
 import 'package:tm_store_app/common/widgets/texts/t_brand_title_text_with_verified_icon.dart';
+import 'package:tm_store_app/feastures/shop/models/product_model.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
 import 'package:tm_store_app/utils/constants/enums.dart';
 import 'package:tm_store_app/utils/constants/image_strings.dart';
@@ -11,7 +12,8 @@ import 'package:tm_store_app/utils/constants/sizes.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 class TProdcutMetaData extends StatelessWidget {
-  const TProdcutMetaData({super.key});
+  final ProductModel product;
+  const TProdcutMetaData({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +33,12 @@ class TProdcutMetaData extends StatelessWidget {
             // Price
             Text('\$250', style: Theme.of(context).textTheme.titleSmall!.apply(decoration: TextDecoration.lineThrough),),
             const SizedBox(width: TSizes.spaceBtwItems,),
-            const TProductPriceText(price: '175', isLarge: true,),
+             TProductPriceText(price: product.productPrice.toString()  , isLarge: true,),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 1.5,),
          // Title
-         const TProductTitleText(title: 'Green Nike Sports Shirt'),
+          TProductTitleText(title: product.productName),
          const SizedBox(height: TSizes.spaceBtwItems / 1.5,),
         // Stock Status
         Row(
@@ -51,7 +53,7 @@ class TProdcutMetaData extends StatelessWidget {
          Row(
           children: [
             TCircularImage(image: TImages.authImage, width: 32, height: 32, overlayColor: dark ? TColors.white : TColors.black,),
-            TBrandTitleWithVerifiedIcon(title: "Nike", brandTextSize: TextSizes.medium,)
+            TBrandTitleWithVerifiedIcon(title: product.description, brandTextSize: TextSizes.medium,)
           ],
          )
 

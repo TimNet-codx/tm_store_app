@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/common/widgets/custom_shape/curved_edges/curved_edges_widget.dart';
 import 'package:tm_store_app/common/widgets/icons/t_circular_icon.dart';
 import 'package:tm_store_app/common/widgets/images/t_rounded_image.dart';
-import 'package:tm_store_app/feastures/shop/controllers/product_controller.dart';
 import 'package:tm_store_app/feastures/shop/models/product_model.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
-import 'package:tm_store_app/utils/constants/image_strings.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
@@ -19,9 +16,8 @@ class TProductImageSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductController productController = Get.put(ProductController());
-
     final dark = THelperFunctions.isDarkMode(context);
+    
     return TCurvedEdgeWidget(
       child: Container(
         color: dark ? TColors.darkGrey : TColors.light,
@@ -64,7 +60,7 @@ class TProductImageSlider extends StatelessWidget {
                     border: Border.all(color: TColors.primary),
                     padding: const EdgeInsets.all(TSizes.sm),
                     imageUrl: imageUrl,
-                    isNetWorkImage: true,
+                    isNetworkImage: true,
                     );
                      }
                 ),

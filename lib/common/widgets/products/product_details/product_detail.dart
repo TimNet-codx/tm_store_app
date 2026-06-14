@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:readmore/readmore.dart';
-
 import 'package:tm_store_app/common/widgets/products/product_details/widgets/bottom_add_to_cart_widget.dart';
 import 'package:tm_store_app/common/widgets/products/product_details/widgets/product_attributes.dart';
 import 'package:tm_store_app/common/widgets/products/product_details/widgets/product_detail_image_slider.dart';
@@ -12,8 +11,7 @@ import 'package:tm_store_app/common/widgets/products/product_reviews/product_rev
 import 'package:tm_store_app/common/widgets/texts/section_heading.dart';
 import 'package:tm_store_app/feastures/shop/models/product_model.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
-
-//import 'package:tim_store/utils/helpers/helper_functions.dart';
+import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProductModel product;
@@ -21,9 +19,10 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final dark = THelperFunctions.isDarkMode(context);
+    final dark = THelperFunctions.isDarkMode(context);
+
     return Scaffold(
-      bottomNavigationBar: TBottomAddToCart(),
+      bottomNavigationBar: TBottomAddToCart(product),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -37,7 +36,7 @@ class ProductDetailScreen extends StatelessWidget {
                   TRatingAndShare(),
 
                   // Price, Title, Stock, & Brand
-                  TProdcutMetaData(),
+                  TProdcutMetaData(product: product,),
 
                   // Product Attributes
                   TProductAttributes(),

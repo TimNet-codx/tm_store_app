@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tm_store_app/provider/cart_provider.dart';
 import 'package:tm_store_app/provider/user_provider.dart';
 import 'package:tm_store_app/service/global_variables.dart';
 import 'package:tm_store_app/utils/constants/image_strings.dart';
@@ -63,7 +64,9 @@ if (response.statusCode != 200 && response.statusCode != 201) {
     final decoded = jsonDecode(response.body);
 
     final token = decoded['token'];
-    final userJson = jsonEncode(decoded['user']);
+    // final userJson = jsonEncode(decoded['user']);
+    final userMap = decoded['user'];
+      final userJson = jsonEncode(userMap);
 
     /// 💾 SAVE TO LOCAL STORAGE
     final prefs = await SharedPreferences.getInstance();
@@ -72,9 +75,22 @@ if (response.statusCode != 200 && response.statusCode != 201) {
     await prefs.setString('user', userJson);
 
     /// 🧠 UPDATE APP STATE
-    providerContainer
-        .read(userProvider.notifier)
-        .setUser(userJson);
+    // providerContainer
+    //     .read(userProvider.notifier)
+    //     .setUser(userJson);
+
+    /// 🧠 ACCESS THE ACTIVE RIVERPOD CONTAINER FROM CONTEXT
+      // This links directly to the ProviderScope at the root of your application
+      final container = ProviderScope.containerOf(context);
+
+      // 1. Set the active user globally in Riverpod
+      container.read(userProvider.notifier).setUser(userJson);
+
+      // 2. ✅ EXTRACT MONGODB USER ID AND FETCH CART IMMEDIATELY ON LOGIN
+      final String userId = userMap['id'] ?? userMap['_id'] ?? '';
+      if (userId.isNotEmpty) {
+        await container.read(cartProvider.notifier).loadUserCart(userId);
+      }
 
     /// 🛑 STOP LOADER
     TFullScreenLoader.stopLoading();
