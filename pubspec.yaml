@@ -53,6 +53,7 @@ dependencies:
   flutter_secure_storage: ^10.0.0
   flutter_native_splash: ^2.4.6
   smooth_page_indicator: ^1.2.1
+  flutter_launcher_icons: ^0.13.1
   
 dev_dependencies:
   flutter_test:
@@ -91,6 +92,27 @@ flutter:
     - assets/images/reviews/
     - assets/icons/payment_methods/
     - assets/images/on_boarding_images/
+
+
+flutter_launcher_icons:
+ android: "ic_launcher"
+ ios: true
+ min_sdk_android: 21
+  
+  # Android - black logo on white background
+ image_path_android: "assets/icons/t-store-splash-logo-black.png"
+ adaptive_icon_background: "#FFFFFF"
+ adaptive_icon_foreground: "assets/icons/t-store-splash-logo-black.png"
+  
+  # iOS - white logo
+ image_path_ios: "assets/icons/t-store-splash-logo-white.png"
+  
+  # Web
+ web:
+    generate: true
+    image_path: "assets/icons/t-store-splash-logo-black.png"
+    background_color: "#FFFFFF"
+    theme_color: "#272727"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

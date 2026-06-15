@@ -274,7 +274,11 @@ class MyApp extends ConsumerWidget {
 
     // 2. Seed and hydrate the user session data into the Riverpod state graph
     if (initialToken != null && initialUserJson != null) {
-      ref.read(userProvider.notifier).setUser(initialUserJson!);
+      // ref.read(userProvider.notifier).setUser(initialUserJson!);
+      //Delay provider modification until the frame is fully built
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(userProvider.notifier).setUser(initialUserJson!);
+      });
       try {
         final Map<String, dynamic> userData = jsonDecode(initialUserJson!);
         final String userId = userData['id'] ?? userData['_id'] ?? '';
@@ -288,7 +292,11 @@ class MyApp extends ConsumerWidget {
         print("⚠️ Error parsing runtime user session state payload: $e");
       }
     } else {
-      ref.read(userProvider.notifier).signOut();
+      // ref.read(userProvider.notifier).signOut();
+      // Delay the signOut provider modification until post-frame as well
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(userProvider.notifier).signOut();
+      });
     }
   }
 
