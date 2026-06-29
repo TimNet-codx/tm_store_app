@@ -3,14 +3,17 @@ import 'dart:convert';
 class UserModel{
   final String id;
   final String fullName;
-  final String email;
+  final String email; 
+  final String country;
   final String state;
-  final String city;
-  final String locality;
+  final String city; 
+  final String street;
+  final String phoneNumber;
+  final String postalCode;
   final String password;
   final String token;
 
-  UserModel({required this.id, required this.fullName, required this.email, required this.state, required this.city, required this.locality, required this.password, required this.token});
+  UserModel({required this.id, required this.fullName, required this.email, required this.postalCode, required this.phoneNumber, required this.country, required this.state, required this.city, required this.street, required this.password, required this.token});
   
   // Serialiation: Convert  User Object to a Map
   // MAP: A Map is a collection of key-value pairs
@@ -22,9 +25,12 @@ class UserModel{
         "id": id,
         "fullName": fullName,
         "email": email,
+        "country": country,
         "state": state,
         "city": city,
-        "locality": locality,
+        "street": street,
+        "postalCode": postalCode,
+        "phoneNumber": phoneNumber,
         "password": password,
         "token": token,
     };
@@ -56,12 +62,14 @@ class UserModel{
       // id: map['_id']?.toString() ?? map['id']?.toString() ?? "",
       fullName: map["fullName"] as String? ?? "",
       email: map["email"] as String? ?? "",
+      country: map["country"] as String? ?? "",
       state: map["state"] as String? ?? "",
       city: map["city"] as String? ?? "",
-      locality: map["locality"] as String? ?? "",
+      postalCode: map["postalCode"] as String? ?? "",
+      street: map["street"] as String? ?? "",
       password: map["password"] as String? ?? "",
       token: map["token"] as String? ?? "",
-      
+      phoneNumber: map["phoneNumber"] as String? ?? "",
       
         
     );  

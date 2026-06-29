@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tm_store_app/common/widgets/texts/section_heading.dart';
+import 'package:tm_store_app/feastures/shop/views/checkout/widgets/seletectAddress.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 
 class TBillingAddressSection extends StatelessWidget {
@@ -10,7 +11,9 @@ class TBillingAddressSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TSectionHeading(title: 'Shipping  Address', buttonTitle: 'Change', onPerssed: (){},),
+        GestureDetector(
+          child: TSectionHeading(title: "Shipping  Address", buttonTitle: 'Change', onPerssed: () => _showSelectAddress(context),),
+          ),
         Text("T's Store", style: Theme.of(context).textTheme.bodyLarge,),
         const SizedBox(height: TSizes.spaceBtwItems / 2,),
         Row(
@@ -30,3 +33,13 @@ class TBillingAddressSection extends StatelessWidget {
     );
   }
 }
+
+
+ void _showSelectAddress(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const SelectAddress(),
+    );
+  }

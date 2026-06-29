@@ -25,7 +25,8 @@ class LoginUserController extends GetxController {
   //  final localStorage = GetStorage();
    final  email = TextEditingController();
    final password = TextEditingController();
-   GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
+
+  //  GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
 Future<void> signInUser({ required BuildContext context, required String email, required String password,}) async {
   try {
     /// 🔄 START LOADING

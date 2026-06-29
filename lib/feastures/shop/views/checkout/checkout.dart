@@ -87,7 +87,9 @@ class CheckoutScreen extends ConsumerWidget {
               title: 'Payment Success',
               subTitle: 'Your item will be shipped soon!',
               onPressed: () => Get.offAll(() =>  MainScreen()),
-              )), child: Text('Checkout \$$totalAmount'),),
+              )
+              
+              ), child: Text('Checkout \$$totalAmount'),),
           ),
     );
   }

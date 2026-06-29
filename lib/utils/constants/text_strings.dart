@@ -25,6 +25,11 @@ class TTexts {
   static const String lastName = "Last Name";
   static const String fullName = "Full Name";
   static const String email = "E-Mail";
+  static const String country = "Country";
+  static const String state = "State";
+  static const String city = "City"; 
+  static const String postalCode = "Postal Code";
+  static const String street = "Street";
   static const String password = "Password";
   static const String confirmPassword = "Confirm Password";
   static const String newPassword = "New Password";

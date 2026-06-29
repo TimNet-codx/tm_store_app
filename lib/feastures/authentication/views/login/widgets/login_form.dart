@@ -9,14 +9,16 @@ import 'package:tm_store_app/utils/constants/text_strings.dart';
 import 'package:tm_store_app/utils/validators/validation.dart';
 
 class TSignInForm extends StatelessWidget {
-  const TSignInForm({super.key});
+   TSignInForm({super.key});
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginUserController());
 
     return Form(
-      key: controller.signInFormKey,
+      key: _formKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
         child: Column(
