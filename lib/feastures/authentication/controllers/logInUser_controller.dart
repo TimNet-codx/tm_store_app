@@ -20,67 +20,61 @@ class LoginUserController extends GetxController {
   static LoginUserController get instance => Get.find();
 
   // Variables
-   final rememberMe = false.obs;
-   final hidePassword = true.obs;
+  final rememberMe = false.obs;
+  final hidePassword = true.obs;
   //  final localStorage = GetStorage();
-   final  email = TextEditingController();
-   final password = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
 
   //  GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
-Future<void> signInUser({ required BuildContext context, required String email, required String password,}) async {
-  try {
-    /// 🔄 START LOADING
-    TFullScreenLoader.openLoadingDialog('Logging you in...',TImages.docerAnimation);
+  Future<void> signInUser({required BuildContext context, required String email, required String password}) async {
+    try {
+      /// 🔄 START LOADING
+      TLoaders.openLoadingDialog('Logging you in...', TImages.docerAnimation);
 
-    /// 🌐 CHECK INTERNET
-    final isConnected = await NetworkManager.instance.isConnected();
-    if (!isConnected) {
-      throw 'No internet connection';
-    }
+      /// 🌐 CHECK INTERNET
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        throw 'No internet connection';
+      }
 
-    /// 📡 API CALL
-    final response = await http.post(Uri.parse('$uri/api/signin'),
-      headers: const {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({'email': email.trim(), 'password': password.trim(),
-      }),
-    );
+      /// 📡 API CALL
+      final response = await http.post(Uri.parse('$uri/api/signin'), headers: const {'Content-Type': 'application/json; charset=UTF-8'}, body: jsonEncode({'email': email.trim(), 'password': password.trim()}));
 
-    /// ❌ HANDLE SERVER ERRORS
-if (response.statusCode != 200 && response.statusCode != 201) {
-  String errorMessage = 'Login failed';
+      /// ❌ HANDLE SERVER ERRORS
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        String errorMessage = 'Login failed';
 
-  try {
-    final decoded = jsonDecode(response.body);
-    if (decoded is Map) {
-      errorMessage = decoded['message'] ?? decoded['msg'] ?? errorMessage;
-    }
-  } catch (_) {}
+        try {
+          final decoded = jsonDecode(response.body);
+          if (decoded is Map) {
+            errorMessage = decoded['message'] ?? decoded['msg'] ?? errorMessage;
+          }
+        } catch (_) {}
 
-  throw Exception(errorMessage);
-}
+        throw Exception(errorMessage);
+      }
 
-    /// ✅ SUCCESS RESPONSE
-    final decoded = jsonDecode(response.body);
+      /// ✅ SUCCESS RESPONSE
+      final decoded = jsonDecode(response.body);
 
-    final token = decoded['token'];
-    // final userJson = jsonEncode(decoded['user']);
-    final userMap = decoded['user'];
+      final token = decoded['token'];
+      // final userJson = jsonEncode(decoded['user']);
+      final userMap = decoded['user'];
       final userJson = jsonEncode(userMap);
 
-    /// 💾 SAVE TO LOCAL STORAGE
-    final prefs = await SharedPreferences.getInstance();
-    // await prefs.setString('auth-token', token);
-    await prefs.setString('token', token);
-    await prefs.setString('user', userJson);
+      /// 💾 SAVE TO LOCAL STORAGE
+      final prefs = await SharedPreferences.getInstance();
+      // await prefs.setString('auth-token', token);
+      await prefs.setString('token', token);
+      await prefs.setString('user', userJson);
 
-    /// 🧠 UPDATE APP STATE
-    // providerContainer
-    //     .read(userProvider.notifier)
-    //     .setUser(userJson);
+      /// 🧠 UPDATE APP STATE
+      // providerContainer
+      //     .read(userProvider.notifier)
+      //     .setUser(userJson);
 
-    /// 🧠 ACCESS THE ACTIVE RIVERPOD CONTAINER FROM CONTEXT
+      /// 🧠 ACCESS THE ACTIVE RIVERPOD CONTAINER FROM CONTEXT
       // This links directly to the ProviderScope at the root of your application
       final container = ProviderScope.containerOf(context);
 
@@ -93,21 +87,20 @@ if (response.statusCode != 200 && response.statusCode != 201) {
         await container.read(cartProvider.notifier).loadUserCart(userId);
       }
 
-    /// 🛑 STOP LOADER
-    TFullScreenLoader.stopLoading();
+      /// 🛑 STOP LOADER
+      TLoaders.stopLoading();
 
-    /// 🚀 NAVIGATION
-   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>  MainScreen()), (route)=> false);
+      /// 🚀 NAVIGATION
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
 
+      /// 🎉 SUCCESS MESSAGE
+      TLoaders.successSnackBar(title: 'Success', message: 'Login successful');
+    } catch (e) {
+      /// 🛑 STOP LOADER SAFELY
+      TLoaders.stopLoading();
 
-    /// 🎉 SUCCESS MESSAGE
-    TLoaders.successSnackBar(title: 'Success', message: 'Login successful');
-  } catch (e) {
-    /// 🛑 STOP LOADER SAFELY
-    TFullScreenLoader.stopLoading();
-
-    /// ❗ SHOW ERROR
-    TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString().replaceAll('Exception:', '').trim() );
+      /// ❗ SHOW ERROR
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString().replaceAll('Exception:', '').trim());
+    }
   }
-}
 }

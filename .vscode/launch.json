@@ -23,6 +23,19 @@
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart"
+        },
+        {
+            "name": "tm_store_app (Flutter Pixel 7 API 30)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "tm_store_app (Flutter emulator-5556)",
+            "program": "lib/main.dart",
+            "deviceId": "emulator-5556",
+            "request": "launch",
+            "type": "dart"
         }
     ]
 }

@@ -6,13 +6,14 @@ import 'package:tm_store_app/utils/device/device_utility.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 class TAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TAppBar({super.key, this.title, this.actions, this.leadingIcon, this.leadingOnPressed, this.showBackArrow = false});
+  const TAppBar({super.key, this.backArrowColor, this.title, this.actions, this.leadingIcon, this.leadingOnPressed, this.showBackArrow = false});
 
   final Widget? title;
   final bool showBackArrow;
   final IconData? leadingIcon;
   final List<Widget>? actions;
   final VoidCallback? leadingOnPressed;
+  final Color? backArrowColor;
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +23,22 @@ class TAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         automaticallyImplyLeading: false,
         // backgroundColor: TColors.primary,
-         backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         //backgroundColor: Colors.transparent,
-        leading: showBackArrow
-         ? IconButton(onPressed: () => Get.back(), icon:  Icon(Iconsax.arrow_left, color: dark ? TColors.white : TColors.black,)) 
-         : leadingIcon != null ? IconButton(onPressed: leadingOnPressed, icon: Icon(leadingIcon)) : null,
-         title: title,
-         actions: actions,
+        leading:
+            showBackArrow
+                ? IconButton(onPressed: () => Get.back(), icon: Icon(Iconsax.arrow_left, color: backArrowColor ?? (dark ? TColors.dark : TColors.light)))
+                : leadingIcon != null
+                ? IconButton(onPressed: leadingOnPressed, icon: Icon(leadingIcon))
+                : null,
+        title: title,
+        actions: actions,
       ),
-      );
+    );
   }
-  
+
   @override
   // TODO: implement preferredSize
   // Size get preferredSize => throw UnimplementedError();
   Size get preferredSize => Size.fromHeight(TDeviceUtils.getAppBarHeight());
-
 }

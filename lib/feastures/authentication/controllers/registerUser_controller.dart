@@ -13,19 +13,18 @@ import 'package:tm_store_app/utils/helpers/network_manager.dart';
 import 'package:tm_store_app/utils/popups/full_screen_loader.dart';
 import 'package:tm_store_app/utils/popups/loaders.dart';
 
-
 final providerContainer = ProviderContainer();
 
 class RegisterUserController extends GetxController {
   static RegisterUserController get instance => Get.find();
-  
+
   // Variables
   final hidePassword = true.obs;
   final privacyPolicy = true.obs;
   final email = TextEditingController();
   final fullName = TextEditingController();
   final password = TextEditingController();
-  final confirmPassword = TextEditingController(); 
+  final confirmPassword = TextEditingController();
   final street = TextEditingController();
   final postalCode = TextEditingController();
   final city = TextEditingController();
@@ -33,81 +32,40 @@ class RegisterUserController extends GetxController {
   final country = TextEditingController();
   final phoneNumber = TextEditingController();
 
+  // GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
 
-   // GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
-
-  Future<void> signUpUser({
-    required BuildContext context,
-    required String fullName, 
-    required String email, 
-    required String password, 
-    required String street, 
-    required String city, 
-    required String postalCode,
-    required String phoneNumber, 
-    required String state, 
-    required String country,
-  }) async {
+  Future<void> signUpUser({required BuildContext context, required String fullName, required String email, required String password, required String street, required String city, required String postalCode, required String phoneNumber, required String state, required String country}) async {
     try {
-      TFullScreenLoader.openLoadingDialog(
-        'We are processing your information...',
-        TImages.docerAnimation,
-      );
+      TLoaders.openLoadingDialog('We are processing your information...', TImages.docerAnimation);
 
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        TLoaders.stopLoading();
         return;
       }
 
-      final user = UserModel(
-        id: '',
-        fullName: fullName.trim(),
-        email: email.trim(),
-        postalCode: postalCode.trim(),
-        state: state.trim(),
-        city: city.trim(),
-        street: street.trim(),
-        password: password.trim(),
-        phoneNumber: phoneNumber.trim(),
-        token: '', 
-        country: country.trim(),
-      );
+      final user = UserModel(id: '', fullName: fullName.trim(), email: email.trim(), postalCode: postalCode.trim(), state: state.trim(), city: city.trim(), street: street.trim(), password: password.trim(), phoneNumber: phoneNumber.trim(), token: '', country: country.trim());
 
-      final response = await http.post(
-        Uri.parse('$uri/api/signup'),
-        headers: const {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: user.toJson(),
-      );
+      final response = await http.post(Uri.parse('$uri/api/signup'), headers: const {'Content-Type': 'application/json; charset=UTF-8'}, body: user.toJson());
 
       if (response.statusCode != 200 && response.statusCode != 201) {
-        TFullScreenLoader.stopLoading();
+        TLoaders.stopLoading();
         final message = jsonDecode(response.body)['message'] ?? 'Signup failed';
         throw message;
       }
-/// 🛑 STOP LOADER
-        TFullScreenLoader.stopLoading();
 
-        /// 🎉 SUCCESS MESSAGE
-        TLoaders.successSnackBar(title: 'Congratulations', message: 'User account created successfully. Please login to continue.',);
+      /// 🛑 STOP LOADER
+      TLoaders.stopLoading();
 
-        /// 🚀 REDIRECT TO LOGIN
+      /// 🎉 SUCCESS MESSAGE
+      TLoaders.successSnackBar(title: 'Congratulations', message: 'User account created successfully. Please login to continue.');
+
+      /// 🚀 REDIRECT TO LOGIN
       //  Navigator.push(context, MaterialPageRoute(builder: (context) =>  LogInScreen()));
-    Get.off(() => SuccessScreen(
-        image: TImages.successfullyRegisterAnimation,
-        title: TTexts.yourAccountCreatedTitle, 
-        subTitle: TTexts.yourAccountCreatedSubTitle,
-        onPressed: () => Get.offAll(() => const LogInScreen()),
-      )); 
-     
+      Get.off(() => SuccessScreen(image: TImages.successfullyRegisterAnimation, title: TTexts.yourAccountCreatedTitle, subTitle: TTexts.yourAccountCreatedSubTitle, onPressed: () => Get.offAll(() => const LogInScreen())));
     } catch (e) {
-      TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(
-        title: 'Oh Snap!',
-        message: e.toString(),
-      );
+      TLoaders.stopLoading();
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }
 }

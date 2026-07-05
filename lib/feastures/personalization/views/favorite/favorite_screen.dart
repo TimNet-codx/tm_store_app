@@ -6,17 +6,29 @@ import 'package:tm_store_app/common/widgets/products/product_card/product_card_v
 import 'package:tm_store_app/feastures/shop/controllers/product_controller.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
+import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final dark = THelperFunctions.isDarkMode(context);
     final ProductController productController = Get.put(ProductController());
-    
+
     return Scaffold(
-      appBar: TAppBar(title: Text('Favorite', style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.black),)),
-      body: SingleChildScrollView(child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace), child: Column( children: [TGridLayout(itemCount: productController.favouriteProducts.length, itemBuilder: (_, index) =>  TProductCardVertical(product: productController.favouriteProducts[index],))],),)),
+      // appBar: TAppBar(
+      // title: Text('Favorite',
+      // style: Theme.of(context).textTheme.headlineMedium!.apply(color: dark ? Colors.white : Colors.black))
+      // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight), // Standard AppBar height
+        child: Container(
+          color: TColors.primary, // <-- Your desired background color
+          child: TAppBar(title: Text('Favorite', style: Theme.of(context).textTheme.headlineMedium!.apply(color: dark ? TColors.dark : TColors.white))),
+        ),
+      ),
+      body: SingleChildScrollView(child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace), child: Column(children: [TGridLayout(itemCount: productController.favouriteProducts.length, itemBuilder: (_, index) => TProductCardVertical(product: productController.favouriteProducts[index]))]))),
     );
   }
 }

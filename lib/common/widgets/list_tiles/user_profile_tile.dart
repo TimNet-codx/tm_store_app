@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:tm_store_app/common/widgets/images/t_circular_image.dart';
 import 'package:tm_store_app/feastures/authentication/controllers/user_controller.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
 import 'package:tm_store_app/utils/constants/image_strings.dart';
-
 
 // class TUserProfileTile extends StatelessWidget {
 //   const   TUserProfileTile({
@@ -14,7 +12,7 @@ import 'package:tm_store_app/utils/constants/image_strings.dart';
 //   });
 //   final Function() onPressed;
 
-//   @override 
+//   @override
 //   Widget build(BuildContext context) {
 //    final controller = UserController.instance;
 //     return ListTile(
@@ -33,16 +31,13 @@ import 'package:tm_store_app/utils/constants/image_strings.dart';
 // }
 
 class TUserProfileTile extends StatelessWidget {
-  const TUserProfileTile({
-    super.key,
-    required this.onPressed,
-  });
+  const TUserProfileTile({super.key, required this.onPressed});
 
   final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
-  //  final controller = UserController.instance;
+    //  final controller = UserController.instance;
     final controller = Get.find<UserController>();
 
     // ✅ Wrap with Obx to listen for changes in the user controller
@@ -51,25 +46,14 @@ class TUserProfileTile extends StatelessWidget {
       //final userData = controller.user.value;
       final userData = controller.user.value;
       return ListTile(
-        leading: const TCircularImage(
-          image: TImages.user,
-          width: 50,
-          height: 50,
-          padding: 0,
-        ),
+        leading: const TCircularImage(image: TImages.user, width: 50, height: 50, padding: 0),
         title: Text(
           // ✅ Use null-aware operators and fallback values
           userData?.fullName ?? "Loading...",
           style: Theme.of(context).textTheme.headlineSmall!.apply(color: TColors.white),
         ),
-        subtitle: Text(
-         userData?.email ?? "",
-          style: Theme.of(context).textTheme.bodyMedium!.apply(color: TColors.white),
-        ),
-        trailing: IconButton(
-          onPressed: onPressed,
-          icon: const Icon(Iconsax.edit, color: TColors.white),
-        ),
+        subtitle: Text(userData?.email ?? "", style: Theme.of(context).textTheme.bodyMedium!.apply(color: TColors.white)),
+        trailing: IconButton(onPressed: onPressed, icon: const Icon(Iconsax.edit, color: TColors.white)),
       );
     });
   }

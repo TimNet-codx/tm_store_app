@@ -1,15 +1,12 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:tm_store_app/feastures/personalization/views/account/account_screen.dart';
 import 'package:tm_store_app/feastures/personalization/views/account/settings/settings.dart';
 import 'package:tm_store_app/feastures/personalization/views/favorite/favorite_screen.dart';
-import 'package:tm_store_app/feastures/shop/views/cart/cart_screen.dart';
 import 'package:tm_store_app/feastures/shop/views/category/category_screen.dart';
 import 'package:tm_store_app/feastures/shop/views/home/home_screen.dart';
 import 'package:tm_store_app/feastures/shop/views/stores/stores_screen.dart';
 import 'package:tm_store_app/mainNavigation_controller.dart';
-
 
 // class MainScreen extends StatefulWidget {
 //   const MainScreen({super.key});
@@ -41,7 +38,7 @@ import 'package:tm_store_app/mainNavigation_controller.dart';
 //           _pageIndex = value;
 //         });
 //       },
-//       type: BottomNavigationBarType.fixed, 
+//       type: BottomNavigationBarType.fixed,
 //       items: [
 //       BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home',),
 //       BottomNavigationBarItem(icon: Icon(Iconsax.heart),  label: 'Favorite',),
@@ -56,7 +53,6 @@ import 'package:tm_store_app/mainNavigation_controller.dart';
 //   }
 // }
 
-
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});
 
@@ -70,34 +66,31 @@ class MainScreen extends StatelessWidget {
     const StoresScreen(),
     // const CartScreen(),
     //AccountScreen(),
-    SettingsScreen()
+    SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
-          body: pages[controller.pageIndex.value],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.pageIndex.value,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
-            type: BottomNavigationBarType.fixed,
-            onTap: controller.changePage,
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.heart), label: 'Favorite'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.category), label: 'Categories'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.shop), label: 'Stores'),
-              // BottomNavigationBarItem(
-              //     icon: Icon(Iconsax.shopping_bag), label: 'Cart'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.user), label: 'Account'),
-            ],
-          ),
-        ));
+    return Obx(
+      () => Scaffold(
+        body: pages[controller.pageIndex.value],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: controller.pageIndex.value,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          type: BottomNavigationBarType.fixed,
+          onTap: controller.changePage,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Iconsax.heart), label: 'Favorite'),
+            BottomNavigationBarItem(icon: Icon(Iconsax.category), label: 'Categories'),
+            BottomNavigationBarItem(icon: Icon(Iconsax.shop), label: 'Stores'),
+            // BottomNavigationBarItem(
+            //     icon: Icon(Iconsax.shopping_bag), label: 'Cart'),
+            BottomNavigationBarItem(icon: Icon(Iconsax.user), label: 'Account'),
+          ],
+        ),
+      ),
+    );
   }
 }

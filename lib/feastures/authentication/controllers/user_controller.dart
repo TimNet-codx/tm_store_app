@@ -12,7 +12,7 @@ final providerContainer = ProviderContainer();
 // class UserController extends GetxController {
 //     static UserController get instance => Get.find();
 
-//     var user = Rxn<UserModel>(); 
+//     var user = Rxn<UserModel>();
 //     var isLoading = false.obs;
 
 //   @override
@@ -31,18 +31,17 @@ final providerContainer = ProviderContainer();
 //   // Future<void> getUserData() async {
 //   //     try {
 //   //       isLoading.value = true;
-        
+
 //   //       // ✅ Use SharedPreferences here
-         
+
 //   //       final prefs = await SharedPreferences.getInstance();
-        
-//   //       String? token = prefs.getString('auth-token'); 
+
+//   //       String? token = prefs.getString('auth-token');
 //   //       if (token == null || token.isEmpty) {
 //   //         print("No token found");
 //   //         return;
 //   //       }
 
-    
 //   //       final response = await http.get(
 //   //         Uri.parse("$uri/api/userDetails"),
 //   //         headers: {
@@ -74,9 +73,9 @@ final providerContainer = ProviderContainer();
 // // Future<void> getUserData() async {
 // //     try {
 // //       isLoading.value = true;
-      
+
 // //       final prefs = await SharedPreferences.getInstance();
-// //       String? token = prefs.getString('auth-token'); 
+// //       String? token = prefs.getString('auth-token');
 // //       if (token == null || token.isEmpty) {
 // //         print("No token found");
 // //         return;
@@ -92,7 +91,7 @@ final providerContainer = ProviderContainer();
 
 // //       if (response.statusCode == 200) {
 // //         final decoded = jsonDecode(response.body);
-        
+
 // //         // 🧠 Update app state & preferences strings
 // //         final userJson = jsonEncode(decoded['user']);
 // //         await prefs.setString('user', userJson);
@@ -117,9 +116,9 @@ final providerContainer = ProviderContainer();
 // Future<void> getUserData() async {
 //   try {
 //     isLoading.value = true;
-    
+
 //     final prefs = await SharedPreferences.getInstance();
-//     String? token = prefs.getString('auth-token'); 
+//     String? token = prefs.getString('auth-token');
 //     if (token == null || token.isEmpty) {
 //       print("No token found");
 //       return;
@@ -136,7 +135,7 @@ final providerContainer = ProviderContainer();
 //     if (response.statusCode == 200) {
 //       // 1. Decode the root object directly (e.g., {"fullName": "...", "email": "..."})
 //       final Map<String, dynamic> decoded = jsonDecode(response.body);
-      
+
 //       // 2. Convert the entire object to a string for preferences and Riverpod
 //       final userJson = jsonEncode(decoded);
 //       await prefs.setString('user', userJson);
@@ -144,7 +143,7 @@ final providerContainer = ProviderContainer();
 
 //       // ✅ FIX: Pass the decoded root object straight into your model!
 //       user.value = UserModel.fromMap(decoded);
-      
+
 //       print("👤 User Data Successfully Loaded: ${user.value?.fullName}");
 //     } else {
 //       print("Failed to fetch user data: ${response.statusCode}");
@@ -158,11 +157,10 @@ final providerContainer = ProviderContainer();
 
 //   }
 
-
 class UserController extends GetxController {
   static UserController get instance => Get.find();
 
-  var user = Rxn<UserModel>(); 
+  var user = Rxn<UserModel>();
   var isLoading = false.obs;
 
   // ✅ Add an initialization method to safely load cached values
@@ -182,31 +180,25 @@ class UserController extends GetxController {
   void onInit() {
     super.onInit();
     // Keep this here so it can check for fresh token data in the background
-    getUserData(); 
+    getUserData();
   }
 
   Future<void> getUserData() async {
     try {
       isLoading.value = true;
       final prefs = await SharedPreferences.getInstance();
-      
-      String? token = prefs.getString('auth-token'); 
+
+      String? token = prefs.getString('auth-token');
       if (token == null || token.isEmpty) {
         print("No token found during background refresh");
         return;
       }
 
-      final response = await http.get(
-        Uri.parse("$uri/api/userDetails"),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
-        },
-      );
+      final response = await http.get(Uri.parse("$uri/api/userDetails"), headers: {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'});
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> decoded = jsonDecode(response.body);
-        
+
         final userJson = jsonEncode(decoded);
         await prefs.setString('user', userJson);
         providerContainer.read(userProvider.notifier).setUser(userJson);
@@ -216,6 +208,39 @@ class UserController extends GetxController {
       }
     } catch (e) {
       print("FETCH ERROR: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addOrUpdateUserDetails(UserModel userModel) async {
+    try {
+      isLoading.value = true;
+      final prefs = await SharedPreferences.getInstance();
+
+      String? token = prefs.getString('auth-token');
+      if (token == null || token.isEmpty) {
+        print("No token found during add/update");
+        return;
+      }
+
+      final response = await http.put(Uri.parse("$uri/api/AddOrUpdateUserDetails"), headers: {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'}, body: jsonEncode(userModel.toMap()));
+
+      final Map<String, dynamic> decoded = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        final userData = decoded['user']; // unwrap nested object
+
+        final userJson = jsonEncode(userData);
+        await prefs.setString('user', userJson);
+        providerContainer.read(userProvider.notifier).setUser(userJson);
+
+        user.value = UserModel.fromMap(userData);
+      } else {
+        print("Update failed: ${decoded['msg']}");
+      }
+    } catch (e) {
+      print("ADD/UPDATE ERROR: $e");
     } finally {
       isLoading.value = false;
     }

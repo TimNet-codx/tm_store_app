@@ -3,32 +3,25 @@ import 'package:get/get.dart';
 import 'package:tm_store_app/common/widgets/image_text_widgets/vertical_image_text.dart';
 import 'package:tm_store_app/feastures/shop/controllers/category_controller.dart';
 import 'package:tm_store_app/feastures/shop/views/category/inner_category_screen.dart';
-
+import 'package:tm_store_app/feastures/shop/views/category/widget/inner_category_content_widget.dart';
+import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 class THomeCategories extends StatelessWidget {
   const THomeCategories({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final dark = THelperFunctions.isDarkMode(context);
 
     final CategoryController categoryController = Get.put(CategoryController());
 
     return Obx(() {
-
       if (categoryController.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
 
       if (categoryController.categories.isEmpty) {
-        return Center(
-          child: Text(
-            'No Categories Found!',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .apply(color: Colors.white),
-          ),
-        );
+        return Center(child: Text('No Categories Found!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white)));
       }
 
       return SizedBox(
@@ -39,9 +32,7 @@ class THomeCategories extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, index) {
             final category = categoryController.categories[index];
-            return InkWell(child: TVerticalImageText(image: category.image, title: category.name, onTap: () => {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => InnerCategoryScreen(category: category,),))
-            },));
+            return InkWell(child: TVerticalImageText(image: category.image, title: category.name, onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => InnerCategoryContentWidget(category: category)))}));
 
             // return Padding(
             //   padding: const EdgeInsets.only(left: TSizes.defaultSpace),

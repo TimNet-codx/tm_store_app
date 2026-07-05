@@ -36,49 +36,29 @@ class ProductDetailScreen extends StatelessWidget {
                   TRatingAndShare(),
 
                   // Price, Title, Stock, & Brand
-                  TProdcutMetaData(product: product,),
+                  TProdcutMetaData(product: product),
 
                   // Product Attributes
                   TProductAttributes(),
-                  const SizedBox(height: TSizes.spaceBtwSections,),
+                  const SizedBox(height: TSizes.spaceBtwSections),
                   // Checkout Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(onPressed: (){}, child: Text("Checkout")),
-                  ),
-                  const SizedBox(height: TSizes.spaceBtwSections,),
+                  SizedBox(width: double.infinity, child: ElevatedButton(onPressed: () {}, child: Text("Checkout"))),
+                  const SizedBox(height: TSizes.spaceBtwSections),
 
                   // Description
-                  const TSectionHeading(title: 'Description', showActionButton: false,),
-                  const SizedBox(height: TSizes.spaceBtwItems,),
-                  ReadMoreText(
-                      'This is a product description for Blue  Nike Sleeve less  vest. There are more things that can be  added but i am just practicing and nothings else ',
-                      trimLines: 2,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: 'Show More',
-                      trimExpandedText: 'Less',
-                      moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-                      lessStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-
-                  ),
+                  const TSectionHeading(title: 'Description', showActionButton: false),
+                  const SizedBox(height: TSizes.spaceBtwItems),
+                  ReadMoreText('This is a product description for Blue  Nike Sleeve less  vest. There are more things that can be  added but i am just practicing and nothings else ', trimLines: 2, trimMode: TrimMode.Line, trimCollapsedText: 'Show More', trimExpandedText: 'Less', moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w800), lessStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
 
                   // Reviews
                   const Divider(),
-                  const SizedBox(height: TSizes.spaceBtwItems,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const TSectionHeading(title: "Reviews (199)", showActionButton: false),
-                      IconButton(icon: const Icon(Iconsax.arrow_right_3, size: 18,), onPressed: () => Get.to(() => const ProductReviewsScreen()),)
-                    ],
-                  ) ,
-            
-                  const SizedBox(height: TSizes.spaceBtwSections,),
+                  const SizedBox(height: TSizes.spaceBtwItems),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const TSectionHeading(title: "Reviews (199)", showActionButton: false), IconButton(icon: const Icon(Iconsax.arrow_right_3, size: 18), onPressed: () => Get.to(() => const ProductReviewsScreen()))]),
 
+                  const SizedBox(height: TSizes.spaceBtwSections),
                 ],
-                ),
-              )
-
+              ),
+            ),
           ],
         ),
       ),

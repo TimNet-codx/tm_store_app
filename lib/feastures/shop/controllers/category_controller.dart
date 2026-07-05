@@ -6,7 +6,6 @@
 
 // class CategoryController {
 
-  
 //    Future<List<CategoryMode>> getCategory() async {
 //     try {
 //          http.Response response = await http.get(Uri.parse("$uri/api/categories"),
@@ -14,7 +13,7 @@
 //         "Content-Type": 'application/json; charset=UTF-8'
 //        });
 //       // print(response.body);
-   
+
 //       if (response.statusCode == 200) {
 //       final Map<String, dynamic> data = jsonDecode(response.body);
 
@@ -69,60 +68,52 @@ import 'package:tm_store_app/feastures/shop/controllers/subCategory_controller.d
 import 'package:tm_store_app/feastures/shop/models/category_model.dart';
 import 'package:tm_store_app/service/global_variables.dart';
 
-
 class CategoryController extends GetxController {
-
   final categories = <CategoryMode>[].obs;
-  final isLoading = false .obs;
+  final isLoading = false.obs;
   final isCategoryDetailsLoading = false.obs;
 
   //final SubCategoryController subCategoryController = Get.put<SubCategoryController>();
-final SubCategoryController subCategoryController = Get.put(SubCategoryController());
-
+  final SubCategoryController subCategoryController = Get.put(SubCategoryController());
 
   // final selectedCategoryId = ''.obs;
-    final selectedCategoryId = RxnString();
-    final selectedCategoryName = ''.obs;
-    final selectedCategoryBanner = ''.obs;
-   
-
-
+  final selectedCategoryId = RxnString();
+  final selectedCategoryName = ''.obs;
+  final selectedCategoryBanner = ''.obs;
 
   @override
   void onInit() {
-  super.onInit();
-  initializeData();
-}
+    super.onInit();
+    initializeData();
+  }
 
-Future<void> initializeData() async {
-  // Start all fetches at the same time
-  await Future.wait(
-    [fetchCategories()]
-  );
-}
-//  void selectCategory(String id, String name, String banner ) {
-//     selectedCategoryId.value = id;
-//     selectedCategoryName.value = name;
-//     selectedCategoryBanner.value = banner;
+  Future<void> initializeData() async {
+    // Start all fetches at the same time
+    await Future.wait([fetchCategories()]);
+  }
+  //  void selectCategory(String id, String name, String banner ) {
+  //     selectedCategoryId.value = id;
+  //     selectedCategoryName.value = name;
+  //     selectedCategoryBanner.value = banner;
 
-//     print("Selected ID: $id");
-//   }
+  //     print("Selected ID: $id");
+  //   }
 
-void selectCategory(CategoryMode category, String id, String name, String banner) async {
-  selectedCategoryId.value = category.id;
-  selectedCategoryName.value = category.name;
-  selectedCategoryBanner.value = category.banner;
-  isCategoryDetailsLoading.value = true;
+  void selectCategory(CategoryMode category, String id, String name, String banner) async {
+    selectedCategoryId.value = category.id;
+    selectedCategoryName.value = category.name;
+    selectedCategoryBanner.value = category.banner;
+    isCategoryDetailsLoading.value = true;
 
-  // simulate / fetch products here if needed
-  // await subCategoryController.fetchProductsByCategoriesName();
+    // simulate / fetch products here if needed
+    // await subCategoryController.fetchProductsByCategoriesName();
 
-  // final subController = Get.find<SubCategoryController>();
-  // await subController.fetchProductsByCategoriesName(category.name);
+    // final subController = Get.find<SubCategoryController>();
+    // await subController.fetchProductsByCategoriesName(category.name);
 
-  //selectedCategoryBanner.value = category; // after fetch
-  isCategoryDetailsLoading.value = false;
-}
+    //selectedCategoryBanner.value = category; // after fetch
+    isCategoryDetailsLoading.value = false;
+  }
 
   // // 🔥 API CALL
   // Future<void> fetchCategories() async {
@@ -154,75 +145,66 @@ void selectCategory(CategoryMode category, String id, String name, String banner
   //   }
   // }
 
-
   Future<void> fetchCategories() async {
-  try {
-    isLoading.value = true;
+    try {
+      isLoading.value = true;
 
-    http.Response response = await http.get(
-      Uri.parse("$uri/api/categories"),
-      headers: {"Content-Type": "application/json; charset=UTF-8"},
-    );
+      http.Response response = await http.get(Uri.parse("$uri/api/categories"), headers: {"Content-Type": "application/json; charset=UTF-8"});
 
-    print("STATUS: ${response.statusCode}");
-    print("BODY: ${response.body}");
+      print("STATUS: ${response.statusCode}");
+      print("BODY: ${response.body}");
 
-    if (response.statusCode == 200) {
-      final decoded = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body);
 
-      List<dynamic> categoryList;
+        List<dynamic> categoryList;
 
-      // ✅ if API returns { categories: [...] }
-      if (decoded is Map && decoded['categories'] != null) {
-        categoryList = decoded['categories'];
-      }
-      // ✅ if API returns [ ... ]
-      else if (decoded is List) {
-        categoryList = decoded;
-      } 
-      else {
-        throw Exception("Unexpected API format");
-      }
+        // ✅ if API returns { categories: [...] }
+        if (decoded is Map && decoded['categories'] != null) {
+          categoryList = decoded['categories'];
+        }
+        // ✅ if API returns [ ... ]
+        else if (decoded is List) {
+          categoryList = decoded;
+        } else {
+          throw Exception("Unexpected API format");
+        }
 
-      final result = categoryList
-          .map((e) => CategoryMode.fromJson(e))
-          .toList();
+        final result = categoryList.map((e) => CategoryMode.fromJson(e)).toList();
 
-      categories.assignAll(result);
+        categories.assignAll(result);
 
-       // ✅ SET DEFAULT ONLY ONCE
+        // ✅ SET DEFAULT ONLY ONCE
         if (selectedCategoryId.value == null && categories.isNotEmpty) {
           selectedCategoryId.value = categories.first.id;
         }
-    } else {
-      Get.snackbar("Error", "Failed to load categories");
+      } else {
+        Get.snackbar("Error", "Failed to load categories");
+      }
+    } on SocketException catch (e) {
+      print("Network Error: $e");
+      Get.snackbar("Connection Error", "Check your server connection or IP address.");
+    } catch (e) {
+      print("ERROR: $e");
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading.value = false;
     }
-  } on SocketException catch (e) {
-    print("Network Error: $e");
-    Get.snackbar("Connection Error", "Check your server connection or IP address.");
   }
-  catch (e) {
-    print("ERROR: $e");
-    Get.snackbar("Error", e.toString());
-  } finally {
-    isLoading.value = false;
-  }
-}
 
   // For selecting category
-//  Future<void> selectCategory(String categoryName) async {
-//     // Implement your logic to handle category selection
-//     try {
-//       isLoading.value = true;
-//       http.Response response = await http.get(
-//         Uri.parse("$uri/api/category/$categoryName/subcategory"),
-//         headers: {"Content-Type": "application/json; charset=UTF-8"},
-//       );
-//     } catch (e) {
-//       print(e); 
-//     }finally {
-//     isLoading.value = false;
-//   }
-//   }
-
+  //  Future<void> selectCategory(String categoryName) async {
+  //     // Implement your logic to handle category selection
+  //     try {
+  //       isLoading.value = true;
+  //       http.Response response = await http.get(
+  //         Uri.parse("$uri/api/category/$categoryName/subcategory"),
+  //         headers: {"Content-Type": "application/json; charset=UTF-8"},
+  //       );
+  //     } catch (e) {
+  //       print(e);
+  //     }finally {
+  //     isLoading.value = false;
+  //   }
+  //   }
 }

@@ -16,7 +16,6 @@ import 'package:tm_store_app/utils/constants/image_strings.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
-
 class CheckoutScreen extends ConsumerWidget {
   const CheckoutScreen({super.key});
 
@@ -24,23 +23,27 @@ class CheckoutScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = THelperFunctions.isDarkMode(context);
 
-     final cartData = ref.watch(cartProvider);
-    
+    final cartData = ref.watch(cartProvider);
+
     final totalAmount = ref.read(cartProvider.notifier).calculateTotaLAmount();
 
     return Scaffold(
-      appBar: TAppBar(
-        showBackArrow: true,
-        title: Text("Checkout", style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.black),),
+      //appBar: TAppBar(showBackArrow: true, title: Text("Checkout", style: Theme.of(context).textTheme.headlineMedium!.apply(color: dark ? Colors.white : Colors.black))),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight), // Standard AppBar height
+        child: Container(
+          color: TColors.primary, // <-- Your desired background color
+          child: TAppBar(showBackArrow: true, title: Text('Checkout', style: Theme.of(context).textTheme.headlineMedium!.apply(color: dark ? TColors.dark : TColors.light))),
+        ),
       ),
-      body:  SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
-          children: [
-            // Items in Cart
-              TCarItems(showAddRemoveButtons: false,),
-              const SizedBox(height: TSizes.spaceBtwSections,),
+            children: [
+              // Items in Cart
+              TCarItems(showAddRemoveButtons: false),
+              const SizedBox(height: TSizes.spaceBtwSections),
 
               // Coupon Textfield
               TCouponCode(),
@@ -51,46 +54,30 @@ class CheckoutScreen extends ConsumerWidget {
                 showBorder: true,
                 padding: const EdgeInsets.all(TSizes.md),
                 backgroundColor: dark ? TColors.black : TColors.white,
-                   child: Column(
+                child: Column(
                   children: [
                     // Pricing
                     TBillingAmountSection(),
-                    const SizedBox(height: TSizes.spaceBtwItems,),
+                    const SizedBox(height: TSizes.spaceBtwItems),
 
                     const Divider(),
-                    const SizedBox(height: TSizes.spaceBtwItems,),
+                    const SizedBox(height: TSizes.spaceBtwItems),
 
                     //Payment Methode
                     TBillingPaymentSection(),
-                    const SizedBox(height: TSizes.spaceBtwItems,),
+                    const SizedBox(height: TSizes.spaceBtwItems),
 
                     //Address Section
                     TBillingAddressSection(),
-                    const SizedBox(height: TSizes.spaceBtwItems,),
-
-
-                  ], 
-                )
+                    const SizedBox(height: TSizes.spaceBtwItems),
+                  ],
                 ),
-             
-
-          ],
-          )
-
+              ),
+            ],
           ),
+        ),
       ),
-        bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(TSizes.defaultSpace),
-            child: ElevatedButton(onPressed: () => Get.to(() => 
-             SuccessScreen(
-              image: TImages.successfulPaymentIcon,
-              title: 'Payment Success',
-              subTitle: 'Your item will be shipped soon!',
-              onPressed: () => Get.offAll(() =>  MainScreen()),
-              )
-              
-              ), child: Text('Checkout \$$totalAmount'),),
-          ),
+      bottomNavigationBar: Padding(padding: const EdgeInsets.all(TSizes.defaultSpace), child: ElevatedButton(onPressed: () => Get.to(() => SuccessScreen(image: TImages.successfulPaymentIcon, title: 'Payment Success', subTitle: 'Your item will be shipped soon!', onPressed: () => Get.offAll(() => MainScreen()))), child: Text('Checkout \$$totalAmount'))),
     );
   }
 }

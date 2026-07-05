@@ -12,7 +12,6 @@
 // // import 'package:tm_store_app/utils/theme/theme.dart';
 // // import 'package:tm_store_app/main_screen.dart';
 
-
 // // void main() {
 // //   // Run The App Wrapped in a ProviderScope to enable Riverpod State Management
 // //   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +31,7 @@
 
 // //      String? token = preferences.getString('auth-token',);
 // //      String? userJson = preferences.getString('user',);
-     
+
 // //      // if both token and user data are available, update user state
 // //      if (token != null && userJson != null) {
 // //        ref.read(userProvider.notifier).setUser(userJson);
@@ -73,13 +72,13 @@
 // //             return const Center(
 // //               child: CircularProgressIndicator(),
 // //             );
-// //           } 
+// //           }
 // //           final user = ref.watch(userProvider);
 // //           return user != null ? MainScreen() : LogInScreen();
 // //         },
 // //       ),
 
-// //     ); 
+// //     );
 // //   }
 // // }
 
@@ -108,7 +107,7 @@
 //    await Get.putAsync<SharedPreferences>(() async {
 //     return await SharedPreferences.getInstance();
 //   });
-  
+
 //   // Initialize permanent GetX utilities
 //   Get.put(NetworkManager(), permanent: true);
 //   Get.put(UserController());
@@ -139,8 +138,8 @@
 //   final String? initialUserJson;
 
 //   const MyApp({
-//     super.key, 
-//     this.initialToken, 
+//     super.key,
+//     this.initialToken,
 //     this.initialUserJson
 //   });
 
@@ -158,7 +157,7 @@
 //           final Map<String, dynamic> userData = jsonDecode(initialUserJson!);
 //           // Fallback parsing handles structural schema variations cleanly
 //           final String userId = userData['id'] ?? userData['_id'] ?? '';
-          
+
 //           if (userId.isNotEmpty) {
 //             print("🚀 App Startup Hydration Success -> Sourced Valid User ID: '$userId'");
 //             await ref.read(cartProvider.notifier).loadUserCart(userId);
@@ -191,11 +190,9 @@
 //        //home: isSessionActive ?  MainScreen() :  LogInScreen(),
 //        home: const OnBoardingScreen(),
 //       // home: isSessionActive ?  LogInScreen() :  Scaffold(backgroundColor: TColors.primary, body: Center(child: CircularProgressIndicator(color: Colors.white))),
-//     ); 
+//     );
 //   }
 // }
-
-
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -217,12 +214,17 @@ import 'package:tm_store_app/main_screen.dart';
 void main() async {
   // Ensure framework services are initialized prior to shared preferences check
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
+  FlutterError.onError = (FlutterErrorDetails details) {
+    if (details.exception is AssertionError && details.exception.toString().contains('_pressedKeys')) {
+      return; // ignore this specific harmless assertion
+    }
+    FlutterError.presentError(details);
+  };
   // Initialize and register SharedPreferences instance with GetX
   final preferences = await Get.putAsync<SharedPreferences>(() async {
     return await SharedPreferences.getInstance();
   });
-  
+
   // Initialize permanent GetX utilities
   Get.put(NetworkManager(), permanent: true);
   Get.put(UserController());
@@ -233,7 +235,7 @@ void main() async {
   // Fetch persistent session variables securely prior to rendering any UI
   final String? token = preferences.getString('auth-token');
   final String? userJson = preferences.getString('user');
-  
+
   // 1. READ THE ONBOARDING STATUS FLAG (Defaults to true if it doesn't exist yet)
   final bool isFirstTime = preferences.getBool('IsFirstTime') ?? true;
 
@@ -260,12 +262,7 @@ class MyApp extends ConsumerWidget {
   final String? initialUserJson;
   final bool isFirstTime;
 
-  const MyApp({
-    super.key, 
-    this.initialToken, 
-    this.initialUserJson,
-    required this.isFirstTime,
-  });
+  const MyApp({super.key, this.initialToken, this.initialUserJson, required this.isFirstTime});
 
   /// This async method acts as our background initializer engine
   Future<void> _initializeAppStartup(WidgetRef ref) async {
@@ -282,7 +279,7 @@ class MyApp extends ConsumerWidget {
       try {
         final Map<String, dynamic> userData = jsonDecode(initialUserJson!);
         final String userId = userData['id'] ?? userData['_id'] ?? '';
-        
+
         if (userId.isNotEmpty) {
           // Await both operations sequentially so the spinner keeps spinning until data settles
           await ref.read(cartProvider.notifier).loadUserCart(userId);
@@ -302,9 +299,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isSessionActive = initialToken != null && 
-                                 initialToken!.isNotEmpty && 
-                                 initialUserJson != null;
+    final bool isSessionActive = initialToken != null && initialToken!.isNotEmpty && initialUserJson != null;
 
     return GetMaterialApp(
       title: 'TM Store App',
@@ -313,25 +308,18 @@ class MyApp extends ConsumerWidget {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       initialBinding: GeneralBindings(),
-      
+
       // 3. The FutureBuilder replaces state management cleanly
       home: FutureBuilder(
         future: _initializeAppStartup(ref),
         builder: (context, snapshot) {
           // While your cart sync and auth hydration are running:
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Scaffold(
-              backgroundColor: TColors.primary, 
-              body: const Center(
-                child: CircularProgressIndicator(color: Colors.white),
-              ),
-            );
+            return Scaffold(backgroundColor: TColors.primary, body: const Center(child: CircularProgressIndicator(color: Colors.white)));
           }
 
           // Once initialization finishes successfully, route to the correct screen:
-          return isFirstTime 
-              ? const OnBoardingScreen() 
-              : (isSessionActive ?  MainScreen() : const LogInScreen());
+          return isFirstTime ? const OnBoardingScreen() : (isSessionActive ? MainScreen() : const LogInScreen());
         },
       ),
     );
