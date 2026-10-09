@@ -28,7 +28,7 @@ class Paymetmethodselect extends StatelessWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: dark ? TColors.white.withOpacity(0.3) : TColors.black.withOpacity(0.3),
+              color: dark ? TColors.white.withValues(alpha: 0.3) : TColors.black.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -38,9 +38,10 @@ class Paymetmethodselect extends StatelessWidget {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 24),
-          _paymentOption(context, 'assets/icons/payment_methods/paytm.png', 'Cash on Delivery', controller),
+          _paymentOption(context, 'assets/icons/payment_methods/cash-on-delivery.png', 'Cash on Delivery', controller),
           _paymentOption(context, 'assets/icons/payment_methods/master-card.png', 'Visa/Master Card', controller),
-          _paymentOption(context, 'assets/icons/payment_methods/paypal.png', 'Paypal', controller),
+          _paymentOption(context, 'assets/icons/payment_methods/verve-card.png', 'Verve Card', controller),
+          _paymentOption(context, 'assets/icons/payment_methods/paystack.png', 'Paystack', controller),
         ],
       )
     );
@@ -55,6 +56,7 @@ class Paymetmethodselect extends StatelessWidget {
 
         return GestureDetector(
           onTap: () => controller.updatePaymentMethod(label, image),
+          
           child: Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(16),
@@ -70,8 +72,8 @@ class Paymetmethodselect extends StatelessWidget {
               children: [
                 Image.asset(
                   image,
-                  width: 24,
-                  height: 24,
+                  width: 30,
+                  height: 30,
                 ),
                 const SizedBox(width: 12),
                 Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),

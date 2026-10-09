@@ -539,6 +539,9 @@ Future<void> removeCartItemFromDatabase(String userId, String productId) async {
     });
     return totalAmount;
   }
+
+  Map<String, CartModel> get getCartItems => state; 
 }
 
 final cartProvider = StateNotifierProvider<CartNotifier, Map<String, CartModel>>((ref) => CartNotifier());
+

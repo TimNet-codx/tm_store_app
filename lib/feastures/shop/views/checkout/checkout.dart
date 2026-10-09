@@ -4,15 +4,14 @@ import 'package:get/get.dart';
 import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/common/widgets/custom_shape/container/rounded_container.dart';
 import 'package:tm_store_app/common/widgets/products/cart/coupon_widget.dart';
-import 'package:tm_store_app/common/widgets/success_screen/success_screen.dart';
+import 'package:tm_store_app/feastures/shop/controllers/checkout_controller.dart';
 import 'package:tm_store_app/feastures/shop/views/cart/widgets/cart_items.dart';
 import 'package:tm_store_app/feastures/shop/views/checkout/widgets/billing_address_section.dart';
 import 'package:tm_store_app/feastures/shop/views/checkout/widgets/billing_amount_section.dart';
 import 'package:tm_store_app/feastures/shop/views/checkout/widgets/billing_payment_section.dart';
-import 'package:tm_store_app/main_screen.dart';
+import 'package:tm_store_app/feastures/shop/views/order/orderAddress.dart';
 import 'package:tm_store_app/provider/cart_provider.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
-import 'package:tm_store_app/utils/constants/image_strings.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
@@ -21,6 +20,7 @@ class CheckoutScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final controller = Get.put(CheckoutController());
     final dark = THelperFunctions.isDarkMode(context);
 
     final cartData = ref.watch(cartProvider);
@@ -30,10 +30,20 @@ class CheckoutScreen extends ConsumerWidget {
     return Scaffold(
       //appBar: TAppBar(showBackArrow: true, title: Text("Checkout", style: Theme.of(context).textTheme.headlineMedium!.apply(color: dark ? Colors.white : Colors.black))),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight), // Standard AppBar height
+        preferredSize: const Size.fromHeight(
+          kToolbarHeight,
+        ), // Standard AppBar height
         child: Container(
           color: TColors.primary, // <-- Your desired background color
-          child: TAppBar(showBackArrow: true, title: Text('Checkout', style: Theme.of(context).textTheme.headlineMedium!.apply(color: dark ? TColors.dark : TColors.light))),
+          child: TAppBar(
+            showBackArrow: true,
+            title: Text(
+              'Checkout',
+              style: Theme.of(context).textTheme.headlineMedium!.apply(
+                color: dark ? TColors.dark : TColors.light,
+              ),
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -62,12 +72,13 @@ class CheckoutScreen extends ConsumerWidget {
 
                     const Divider(),
                     const SizedBox(height: TSizes.spaceBtwItems),
-
+                    //Order Address Section
+                    // TOrderAddressSection(),
                     //Payment Methode
                     TBillingPaymentSection(),
                     const SizedBox(height: TSizes.spaceBtwItems),
 
-                    //Address Section
+                    //Shipping Address Section
                     TBillingAddressSection(),
                     const SizedBox(height: TSizes.spaceBtwItems),
                   ],
@@ -77,7 +88,15 @@ class CheckoutScreen extends ConsumerWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(padding: const EdgeInsets.all(TSizes.defaultSpace), child: ElevatedButton(onPressed: () => Get.to(() => SuccessScreen(image: TImages.successfulPaymentIcon, title: 'Payment Success', subTitle: 'Your item will be shipped soon!', onPressed: () => Get.offAll(() => MainScreen()))), child: Text('Checkout \$$totalAmount'))),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(TSizes.defaultSpace),
+        child: ElevatedButton(
+          // onPressed: () => Get.to(() => SuccessScreen(image: TImages.successfulPaymentIcon, title: 'Payment Success', subTitle: 'Your item will be shipped soon!',
+          onPressed: () => controller.processCheckout(totalAmount),
+          // onPressed: () => Get.offAll(() => MainScreen()))),
+          child: Text('Checkout \$$totalAmount'),
+        ),
+      ),
     );
   }
 }

@@ -10,7 +10,6 @@ import 'package:tm_store_app/service/global_variables.dart';
 import 'package:tm_store_app/utils/constants/image_strings.dart';
 import 'package:tm_store_app/utils/constants/text_strings.dart';
 import 'package:tm_store_app/utils/helpers/network_manager.dart';
-import 'package:tm_store_app/utils/popups/full_screen_loader.dart';
 import 'package:tm_store_app/utils/popups/loaders.dart';
 
 final providerContainer = ProviderContainer();

@@ -157,29 +157,129 @@ final providerContainer = ProviderContainer();
 
 //   }
 
+// class UserController extends GetxController {
+//   static UserController get instance => Get.find();
+
+//   var user = Rxn<UserModel>();
+//   var isLoading = false.obs;
+
+//   // ✅ Add an initialization method to safely load cached values
+//   void hydrateUserFromCache(String? userJson) {
+//     if (userJson != null && userJson.isNotEmpty) {
+//       try {
+//         final Map<String, dynamic> decoded = jsonDecode(userJson);
+//         user.value = UserModel.fromMap(decoded);
+//         print("👤 GetX Controller Hydrated From Cache: ${user.value?.fullName}");
+//       } catch (e) {
+//         print("⚠️ Error hydrating GetX user from cache string: $e");
+//       }
+//     }
+//   }
+
+//   @override
+//   void onInit() {
+//     super.onInit();
+//     // Keep this here so it can check for fresh token data in the background
+//     getUserData();
+//   }
+
+//   Future<void> getUserData() async {
+//     try {
+//       isLoading.value = true;
+//       final prefs = await SharedPreferences.getInstance();
+
+//       String? token = prefs.getString('auth-token');
+//       if (token == null || token.isEmpty) {
+//         print("No token found during background refresh");
+//         return;
+//       }
+
+//       final response = await http.get(Uri.parse("$uri/api/userDetails"), headers: {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'});
+
+//       if (response.statusCode == 200) {
+//         final Map<String, dynamic> decoded = jsonDecode(response.body);
+
+//         final userJson = jsonEncode(decoded);
+//         await prefs.setString('user', userJson);
+//         providerContainer.read(userProvider.notifier).setUser(userJson);
+
+//         // Update the state with fresh background data cleanly
+//         user.value = UserModel.fromMap(decoded);
+//       }
+//     } catch (e) {
+//       print("FETCH ERROR: $e");
+//     } finally {
+//       isLoading.value = false;
+//     }
+//   }
+
+//   Future<void> addOrUpdateUserDetails(UserModel userModel) async {
+//     try {
+//       isLoading.value = true;
+//       final prefs = await SharedPreferences.getInstance();
+
+//       String? token = prefs.getString('auth-token');
+//       if (token == null || token.isEmpty) {
+//         print("No token found during add/update");
+//         return;
+//       }
+
+//       final response = await http.put(Uri.parse("$uri/api/AddOrUpdateUserDetails"), headers: {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'}, body: jsonEncode(userModel.toMap()));
+
+//       final Map<String, dynamic> decoded = jsonDecode(response.body);
+
+//       if (response.statusCode == 200) {
+//         final userData = decoded['user']; // unwrap nested object
+
+//         final userJson = jsonEncode(userData);
+//         await prefs.setString('user', userJson);
+//         providerContainer.read(userProvider.notifier).setUser(userJson);
+
+//         user.value = UserModel.fromMap(userData);
+//       } else {
+//         print("Update failed: ${decoded['msg']}");
+//       }
+//     } catch (e) {
+//       print("ADD/UPDATE ERROR: $e");
+//     } finally {
+//       isLoading.value = false;
+//     }
+//   }
+// }
+
 class UserController extends GetxController {
   static UserController get instance => Get.find();
 
   var user = Rxn<UserModel>();
   var isLoading = false.obs;
 
-  // ✅ Add an initialization method to safely load cached values
   void hydrateUserFromCache(String? userJson) {
     if (userJson != null && userJson.isNotEmpty) {
       try {
         final Map<String, dynamic> decoded = jsonDecode(userJson);
         user.value = UserModel.fromMap(decoded);
-        print("👤 GetX Controller Hydrated From Cache: ${user.value?.fullName}");
+        print(
+          "👤 GetX Controller Hydrated From Cache: ${user.value?.fullName}",
+        );
       } catch (e) {
         print("⚠️ Error hydrating GetX user from cache string: $e");
       }
     }
   }
 
+  /// 🔄 CALL THIS ON LOGIN TO IMMEDIATELY UPDATE GETX STATE
+  void setUser(Map<String, dynamic> userData) {
+    user.value = UserModel.fromMap(userData);
+  }
+
+  /// 🧹 CALL THIS ON LOGOUT
+  void clearUser() {
+    user.value = null;
+  }
+
   @override
   void onInit() {
     super.onInit();
-    // Keep this here so it can check for fresh token data in the background
     getUserData();
   }
 
@@ -188,22 +288,30 @@ class UserController extends GetxController {
       isLoading.value = true;
       final prefs = await SharedPreferences.getInstance();
 
-      String? token = prefs.getString('auth-token');
+      // FIXED: Look for 'token' first to match signInUser key
+      String? token = prefs.getString('token') ?? prefs.getString('auth-token');
       if (token == null || token.isEmpty) {
         print("No token found during background refresh");
         return;
       }
 
-      final response = await http.get(Uri.parse("$uri/api/userDetails"), headers: {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'});
+      final response = await http.get(
+        Uri.parse("$uri/api/userDetails"),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+          'x-auth-token': token,
+        },
+      );
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> decoded = jsonDecode(response.body);
 
         final userJson = jsonEncode(decoded);
         await prefs.setString('user', userJson);
-        providerContainer.read(userProvider.notifier).setUser(userJson);
 
-        // Update the state with fresh background data cleanly
+        // Sync Riverpod and GetX simultaneously
+        providerContainer.read(userProvider.notifier).setUser(userJson);
         user.value = UserModel.fromMap(decoded);
       }
     } catch (e) {
@@ -218,23 +326,32 @@ class UserController extends GetxController {
       isLoading.value = true;
       final prefs = await SharedPreferences.getInstance();
 
-      String? token = prefs.getString('auth-token');
+      // FIXED: Look for 'token' first
+      String? token = prefs.getString('token') ?? prefs.getString('auth-token');
       if (token == null || token.isEmpty) {
         print("No token found during add/update");
         return;
       }
 
-      final response = await http.put(Uri.parse("$uri/api/AddOrUpdateUserDetails"), headers: {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'}, body: jsonEncode(userModel.toMap()));
+      final response = await http.put(
+        Uri.parse("$uri/api/AddOrUpdateUserDetails"),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+          'x-auth-token': token,
+        },
+        body: jsonEncode(userModel.toMap()),
+      );
 
       final Map<String, dynamic> decoded = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        final userData = decoded['user']; // unwrap nested object
+        final userData = decoded['user'];
 
         final userJson = jsonEncode(userData);
         await prefs.setString('user', userJson);
-        providerContainer.read(userProvider.notifier).setUser(userJson);
 
+        providerContainer.read(userProvider.notifier).setUser(userJson);
         user.value = UserModel.fromMap(userData);
       } else {
         print("Update failed: ${decoded['msg']}");

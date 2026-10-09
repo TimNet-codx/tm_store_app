@@ -16,16 +16,45 @@ class UserAddressScreen extends StatelessWidget {
     final dark = THelperFunctions.isDarkMode(context);
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () => Get.to(() => const AddAndUpdateAddressScreen()), backgroundColor: TColors.primary, child: const Icon(Iconsax.add, color: TColors.white)),
+      floatingActionButton: FloatingActionButton(
+        onPressed:
+            () => Get.to(
+              () => const AddAndUpdateShippingAddressScreen(
+                buyerId: '<BUYER_ID>',
+              ),
+            ),
+        backgroundColor: TColors.primary,
+        child: const Icon(Iconsax.add, color: TColors.white),
+      ),
       // appBar: TAppBar(showBackArrow: true, title: Text('Addresses', style: Theme.of(context).textTheme.headlineSmall)),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight), // Standard AppBar height
+        preferredSize: const Size.fromHeight(
+          kToolbarHeight,
+        ), // Standard AppBar height
         child: Container(
           color: TColors.primary, // <-- Your desired background color
-          child: TAppBar(showBackArrow: true, title: Text('Addresses', style: Theme.of(context).textTheme.headlineMedium!.apply(color: dark ? TColors.dark : TColors.light))),
+          child: TAppBar(
+            showBackArrow: true,
+            title: Text(
+              'Addresses',
+              style: Theme.of(context).textTheme.headlineMedium!.apply(
+                color: dark ? TColors.dark : TColors.light,
+              ),
+            ),
+          ),
         ),
       ),
-      body: SingleChildScrollView(child: Padding(padding: EdgeInsets.all(TSizes.defaultSpace), child: Column(children: [TSingleAddress(selectedAddress: true), TSingleAddress(selectedAddress: false)]))),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(TSizes.defaultSpace),
+          child: Column(
+            children: [
+              TSingleAddress(selectedAddress: true),
+              TSingleAddress(selectedAddress: false),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

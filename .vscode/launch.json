@@ -30,6 +30,12 @@
             "request": "launch",
             "type": "dart"
         },
+         {
+            "name": "tm_store_app (Flutter Pixel 10)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart"
+        },
         {
             "name": "tm_store_app (Flutter emulator-5556)",
             "program": "lib/main.dart",

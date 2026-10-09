@@ -7,8 +7,7 @@ void manageHttpResponse({
   required http.Response response, // The Http response  from the API Or Server request
   required BuildContext context, // The context is to show the snackbar widget
   required VoidCallback onSuccess, // the callbck function to be executed when the responsee is successful
-  }){
-     
+  }){    
      // Switch statement to handle different http status code
     switch(response.statusCode){
       case 200: // status code 200 indicate a successful response

@@ -20,7 +20,11 @@ class TBillingPaymentSection extends StatelessWidget {
       children: [
         GestureDetector(
           //onTap: () => _showSelectPaymentMethod(context),
-          child: TSectionHeading(title: "Payment Method", buttonTitle: 'Change', onPerssed: () => _showSelectPaymentMethod(context)),
+          child: TSectionHeading(
+            title: "Payment Method",
+            buttonTitle: 'Change',
+            onPerssed: () => _showSelectPaymentMethod(context),
+          ),
         ),
         //  TSectionHeading(title: "Payment Method", buttonTitle: 'Change', onPerssed: () {},),
         const SizedBox(height: TSizes.spaceBtwItems / 2),
@@ -28,7 +32,25 @@ class TBillingPaymentSection extends StatelessWidget {
         Obx(() {
           final currentMethod = controller.selectedPaymentMethod.value;
 
-          return Row(children: [TRoundedContainer(width: 60, height: 35, backgroundColor: dark ? TColors.dark : TColors.light, padding: const EdgeInsets.all(TSizes.sm), child: Image(image: AssetImage(currentMethod.image), fit: BoxFit.contain)), const SizedBox(width: TSizes.spaceBtwItems / 2), Text(currentMethod.name, style: Theme.of(context).textTheme.bodyLarge)]);
+          return Row(
+            children: [
+              TRoundedContainer(
+                width: 60,
+                height: 35,
+                backgroundColor: dark ? TColors.dark : TColors.light,
+                padding: const EdgeInsets.all(TSizes.sm),
+                child: Image(
+                  image: AssetImage(currentMethod.image),
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(width: TSizes.spaceBtwItems / 2),
+              Text(
+                currentMethod.name,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
+          );
         }),
       ],
     );
@@ -36,5 +58,10 @@ class TBillingPaymentSection extends StatelessWidget {
 }
 
 void _showSelectPaymentMethod(BuildContext context) {
-  showModalBottomSheet(context: context, isScrollControlled: true, backgroundColor: Colors.transparent, builder: (context) => const Paymetmethodselect());
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) => const Paymetmethodselect(),
+  );
 }

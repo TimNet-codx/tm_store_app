@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/common/widgets/login_signup/form_divider.dart';
 import 'package:tm_store_app/common/widgets/login_signup/social_buttons.dart';
 import 'package:tm_store_app/feastures/authentication/views/login/widgets/login_form.dart';

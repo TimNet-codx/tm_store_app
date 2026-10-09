@@ -199,6 +199,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tm_store_app/bindings/general_bindings.dart';
 import 'package:tm_store_app/feastures/authentication/controllers/user_controller.dart';
@@ -213,9 +214,12 @@ import 'package:tm_store_app/main_screen.dart';
 
 void main() async {
   // Ensure framework services are initialized prior to shared preferences check
-  final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  final WidgetsBinding widgetsBinding =
+      WidgetsFlutterBinding.ensureInitialized();
+      await GetStorage.init();
   FlutterError.onError = (FlutterErrorDetails details) {
-    if (details.exception is AssertionError && details.exception.toString().contains('_pressedKeys')) {
+    if (details.exception is AssertionError &&
+        details.exception.toString().contains('_pressedKeys')) {
       return; // ignore this specific harmless assertion
     }
     FlutterError.presentError(details);
@@ -262,7 +266,12 @@ class MyApp extends ConsumerWidget {
   final String? initialUserJson;
   final bool isFirstTime;
 
-  const MyApp({super.key, this.initialToken, this.initialUserJson, required this.isFirstTime});
+  const MyApp({
+    super.key,
+    this.initialToken,
+    this.initialUserJson,
+    required this.isFirstTime,
+  });
 
   /// This async method acts as our background initializer engine
   Future<void> _initializeAppStartup(WidgetRef ref) async {
@@ -299,7 +308,10 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isSessionActive = initialToken != null && initialToken!.isNotEmpty && initialUserJson != null;
+    final bool isSessionActive =
+        initialToken != null &&
+        initialToken!.isNotEmpty &&
+        initialUserJson != null;
 
     return GetMaterialApp(
       title: 'TM Store App',
@@ -315,11 +327,18 @@ class MyApp extends ConsumerWidget {
         builder: (context, snapshot) {
           // While your cart sync and auth hydration are running:
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Scaffold(backgroundColor: TColors.primary, body: const Center(child: CircularProgressIndicator(color: Colors.white)));
+            return Scaffold(
+              backgroundColor: TColors.primary,
+              body: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            );
           }
 
           // Once initialization finishes successfully, route to the correct screen:
-          return isFirstTime ? const OnBoardingScreen() : (isSessionActive ? MainScreen() : const LogInScreen());
+          return isFirstTime
+              ? const OnBoardingScreen()
+              : (isSessionActive ? MainScreen() : const LogInScreen());
         },
       ),
     );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tm_store_app/common/widgets/image_text_widgets/vertical_image_text.dart';
 import 'package:tm_store_app/feastures/shop/controllers/category_controller.dart';
-import 'package:tm_store_app/feastures/shop/views/category/inner_category_screen.dart';
 import 'package:tm_store_app/feastures/shop/views/category/widget/inner_category_content_widget.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 

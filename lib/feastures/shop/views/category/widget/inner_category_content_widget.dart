@@ -78,7 +78,7 @@ class InnerCategoryContentWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           // ✅ Background color changes if selected
-                          color: isSelected ? Colors.blue.withOpacity(0.1) : Colors.transparent,
+                          color: isSelected ? Colors.blue.withValues(alpha: 0.1) : Colors.transparent,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: isSelected ? Colors.blue : Colors.transparent, width: 1),
                         ),

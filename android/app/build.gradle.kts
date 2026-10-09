@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "com.example.tm_store_app"
     compileSdk = 36
+    buildToolsVersion = "25.0.2"
     ndkVersion = "27.0.12077973"
 
     compileOptions {

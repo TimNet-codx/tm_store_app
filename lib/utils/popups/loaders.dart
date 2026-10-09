@@ -17,7 +17,8 @@ class TLoaders {
           (_) => PopScope(
             canPop: false, // Disable popping with the back button
             child: Container(
-              color: THelperFunctions.isDarkMode(Get.context!) ? TColors.darkContainer : TColors.white,
+            //  color: THelperFunctions.isDarkMode(Get.context!) ? TColors.darkContainer : TColors.white,
+            color: THelperFunctions.isDarkMode(Get.context!) ? Colors.transparent : Colors.transparent,
               width: double.infinity,
               height: double.infinity,
               child: Column(

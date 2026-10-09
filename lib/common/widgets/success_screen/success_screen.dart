@@ -72,13 +72,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:tm_store_app/common/widgets/appbar/appbar.dart';
 import 'package:tm_store_app/utils/constants/colors.dart';
 import 'package:tm_store_app/utils/constants/sizes.dart';
 import 'package:tm_store_app/utils/constants/text_strings.dart';
 import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 import 'package:tm_store_app/utils/styles/spacing_styles.dart';
-import 'package:tm_store_app/utils/helpers/helper_functions.dart';
 
 class SuccessScreen extends StatelessWidget {
   const SuccessScreen({super.key, required this.image, required this.title, required this.subTitle, required this.onPressed});
